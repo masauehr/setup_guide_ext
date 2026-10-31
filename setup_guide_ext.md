@@ -1,11 +1,11 @@
 # setup_guide_ext（設定ガイド）マニュアル
 
-GitHub と Render（dashboard.render.com）の設定画面で、「次はどこ？」を押すと、次に操作する場所を1つだけ光らせて理由を一言で教える Chrome 拡張（個人利用）。tonari_no_mago（別リポジトリ） の画面ガイドを土台に新規作成した（2026-10-31）。
+GitHub・Render（dashboard.render.com）・Supabase（supabase.com/dashboard）の設定画面で、「次はどこ？」を押すと、次に操作する場所を1つだけ光らせて理由を一言で教える Chrome 拡張（個人利用）。tonari_no_mago（別リポジトリ） の画面ガイドを土台に新規作成した（2026-10-31）。
 
 ## 方針
 - **案内だけ**を行う（Phase A）。設定の提案・生成（`render.yaml` や GitHub Actions の workflow）は、案内の精度を確かめてから別フェーズで検討する
 - 設定の反映は人が画面で行う。拡張は書き込まない
-- 対象サイトは `github.com` と `dashboard.render.com` だけ（`host_permissions`）
+- 対象サイトは `github.com`、`dashboard.render.com`、`supabase.com/dashboard` だけ（`host_permissions`）
 - 画面のトークン・キー・接続URLのパスワードらしき文字列は、送信前に〔秘密情報〕へ伏せる。入力欄の値とパスワード欄は集めない
 
 ## 構成
@@ -33,12 +33,13 @@ python3 -m unittest discover -s tests      # 単体テスト
   - モーダルダイアログ（`<dialog>`）は最前面レイヤーに出るため、赤枠がダイアログの裏に隠れた → 対象がダイアログ内なら枠と吹き出しをその中に描く（`overlay.js`）
   - ポップアップの文章が届かず、背後のボタンも要素に混ざっていた → ポップアップが開いているときは中の要素だけを対象にし、見出しと文章を別に送る（`collector.js`、`core.py`）
 - 2026-10-31: **英語の画面への対応**。案内文の英語の用語に日本語訳を括弧で添え、画面・ポップアップの英文の意味を `translation` としてサイドパネルに青い枠で表示（`core.py`、`sidepanel.js`）。Render の画面は英語のため追加。翻訳は Claude の生成なので、課金・削除・権限に関わる文は原文も確認すること
-- 2026-10-31: **「英文を日本語で説明」ボタンを追加**（GitHub・Render 共通）。選択した文章 > 開いているポップアップ > 画面の本文 の順に対象を決め、要点（原文の短い引用と日本語の意味）と注意をサイドパネルに表示。`proxy/explain.py`、プロキシの `/explain`、`collector.js` の `__tnmExplain`。案内の `translation`（短い訳）とは別機能
-- 単体テスト30件が通る
-- 未実施: Render の実画面での確認、評価シナリオ（実画面のスナップショットによる精度評価）、アイコン画像、`TNM_` で始まる環境変数名の整理（tonari_no_mago 由来）
+- 2026-10-31: **「英文を日本語で説明」ボタンを追加**（GitHub・Render・Supabase 共通）。選択した文章 > 開いているポップアップ > 画面の本文 の順に対象を決め、要点（原文の短い引用と日本語の意味）と注意をサイドパネルに表示。`proxy/explain.py`、プロキシの `/explain`、`collector.js` の `__tnmExplain`。案内の `translation`（短い訳）とは別機能
+- 2026-10-31: **Supabase に対応**（`map_registry` で使っている設定の支援）。`host_permissions` に `supabase.com/dashboard` を追加、Supabase のキー（`sb_secret_…` と JWT 形式の service_role／anon キー）をマスク、案内に Supabase 特有の取り消しにくい操作（プロジェクトの削除、DB パスワードのリセット、service_role キーの表示、RLS の無効化、破壊的な SQL、Verify JWT の無効化 など）の注意を追加。ダミー画面で、Edge Function の Verify JWT を OFF にする案内と、DB パスワード確認時にリセットを選ばない動作を確認（実画面は未確認）
+- 単体テスト31件が通る
+- 未実施: Render・Supabase の実画面での確認、評価シナリオ（実画面のスナップショットによる精度評価）、アイコン画像、`TNM_` で始まる環境変数名の整理（tonari_no_mago 由来）
 - 気づいた点: 吹き出しの日本語が分かりにくい場合がある（例: 「公開後も元に戻すと履歴は残ります」）。応答は CLI 経由で約4〜7秒
 
 ## 次の候補
-1. 実機で GitHub・Render の画面を試し、誤案内のパターンを集める
+1. 実機で GitHub・Render・Supabase の画面を試し、誤案内のパターンを集める
 2. 評価シナリオ（実画面のスナップショットを個人情報・秘密を伏せて保存）を作る
 3. 案内が安定したら、設定の提案・生成（B）を検討する

@@ -21,7 +21,7 @@ MODELS = {
     "sonnet": "claude-sonnet-5-5",
 }
 
-SYSTEM_PROMPT = """あなたは GitHub と Render（dashboard.render.com）の設定画面を案内するアシスタントです。利用者は開発者本人で、画面を見ながら「次にどこを操作すればよいか」を1手ずつ知りたいと考えています。
+SYSTEM_PROMPT = """あなたは GitHub、Render（dashboard.render.com）、Supabase（supabase.com/dashboard）の設定画面を案内するアシスタントです。利用者は開発者本人で、画面を見ながら「次にどこを操作すればよいか」を1手ずつ知りたいと考えています。
 
 守ること:
 1. 次に操作すべき要素を、要素一覧のIDから必ず1つだけ選ぶ。
@@ -29,7 +29,7 @@ SYSTEM_PROMPT = """あなたは GitHub と Render（dashboard.render.com）の�
 3. 必須の項目に「未入力」「未選択」が残っているときは、確認・送信・次へのボタンより先に、ページの上から数えて最初の未入力・未選択の項目を選ぶ。「入力済み」「選択済み」の項目は選び直さない。任意の項目は飛ばしてよい。必須の項目がすべて済んでいれば、次へ進むボタンを選ぶ。
 4. 広告、アップグレードへの誘導、目的と違う目立つボタンに惑わされない。小さなリンクやタブでも、目的に合うものを選ぶ。
 5. reason は70字以内。簡潔な日本語で、「〜を押します」「〜を選びます」の形で書く。画面の英語の用語は、英語のあとに括弧で日本語訳を添える（例:「Web Service（Webサービス）」を押します、「Environment（環境変数）」を開きます）。
-6. 削除・公開範囲の変更・本番へのデプロイ・課金プランの変更・トークンやキーの発行や再生成などの取り消しにくい操作を選ぶときは、caution に何が起きるかを一言で書く（例:「リポジトリが完全に削除されます」）。それ以外は caution を空にする。
+6. 削除・公開範囲の変更・本番へのデプロイ・課金プランの変更・トークンやキーの発行や再生成などの取り消しにくい操作を選ぶときは、caution に何が起きるかを一言で書く（例:「リポジトリが完全に削除されます」）。Supabase では、プロジェクトの削除・一時停止、データベースのパスワードのリセット、service_role／secret キーの表示・再生成、テーブルの RLS（行レベルセキュリティ）の無効化、SQL Editor での DROP・DELETE・TRUNCATE などの実行、Storage バケットの公開、Authentication のユーザー削除も同様に扱う。それ以外は caution を空にする。
 7. 画面から判断できない場合、または課金・権限・セキュリティの大きな判断が必要な場合は、target_id を null にして ask_human を true にし、reason に公式ドキュメントや担当者への確認を促す。
 8. 回答は必ず record_guidance ツールで返す。
 9. 「ふさがれている」要素は今は押せない。ダイアログなどがふさいでいるなら、先にそれを閉じる要素を選ぶ。
@@ -62,9 +62,12 @@ TOOL = {
 
 # 個人情報・秘密情報らしき文字列のマスク規則（順序に意味がある: 秘密情報を先に、長い数字列から先に）
 _MASK_RULES = [
-    # トークン・キー（GitHub / Render / AWS / Anthropic・OpenAI系 / Slack）
+    # トークン・キー（GitHub / Render / Supabase / AWS / Anthropic・OpenAI系 / Slack）
     (re.compile(r"\b(?:gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,})"), "〔秘密情報〕"),
     (re.compile(r"\brnd_[A-Za-z0-9]{16,}"), "〔秘密情報〕"),
+    (re.compile(r"\bsb_secret_[A-Za-z0-9_-]{16,}"), "〔秘密情報〕"),
+    # JWT 形式（Supabase の service_role / anon キーなど。service_role は強い権限を持つ）
+    (re.compile(r"\beyJ[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}"), "〔秘密情報〕"),
     (re.compile(r"\b(?:AKIA|ASIA)[A-Z0-9]{16}\b"), "〔秘密情報〕"),
     (re.compile(r"\bsk-[A-Za-z0-9_-]{20,}"), "〔秘密情報〕"),
     (re.compile(r"\bxox[abprs]-[A-Za-z0-9-]{10,}"), "〔秘密情報〕"),

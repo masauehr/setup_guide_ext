@@ -34,6 +34,11 @@ class MaskSecretTest(unittest.TestCase):
     def test_Renderのキーを伏せる(self):
         self.assertEqual(core.mask_pii("rnd_" + "x" * 24), "〔秘密情報〕")
 
+    def test_Supabaseのキーを伏せる(self):
+        self.assertEqual(core.mask_pii("sb_secret_" + "x" * 24), "〔秘密情報〕")
+        jwt = "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoic2VydmljZV9yb2xlIn0.c2lnbmF0dXJlMTIz"
+        self.assertEqual(core.mask_pii("service_role " + jwt), "service_role 〔秘密情報〕")
+
     def test_環境変数の値を伏せて名前は残す(self):
         self.assertEqual(core.mask_pii("DATABASE_PASSWORD=hunter2hunter2"), "DATABASE_PASSWORD=〔秘密情報〕")
         self.assertEqual(core.mask_pii("API_KEY: abcdef123456"), "API_KEY: 〔秘密情報〕")
