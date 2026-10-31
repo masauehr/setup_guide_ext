@@ -100,6 +100,19 @@ page("rd_settings.html", "Settings", RD, '''
 <div class="item"><div><b>Suspend Web Service</b><br><span class="note">Your service will stop and become unreachable.</span></div><button id="suspend">Suspend Web Service</button></div>
 <div class="item"><div><b>Delete Web Service</b><br><span class="note">This permanently deletes the service and its data.</span></div><button id="delete-svc">Delete Web Service</button></div></div>''')
 
+page("rd_menu.html", "Dashboard", RD, '''
+<h1>Overview</h1><button id="new-btn">+ New</button>
+<div class="danger" style="border-color:#888"><h2>New</h2>
+<div class="item"><div><a href="#" id="m-web">Web Service</a><br><span class="note">Dynamic web app. Ideal for full-stack apps, API servers, and mobile backends.</span></div></div>
+<div class="item"><div><a href="#" id="m-static">Static Site</a><br><span class="note">Static content served over a global CDN. Ideal for frontends, blogs, and content sites.</span></div></div>
+<div class="item"><div><a href="#" id="m-private">Private Service</a><br><span class="note">Web service that is only reachable from your other services.</span></div></div>
+<div class="item"><div><a href="#" id="m-worker">Background Worker</a><br><span class="note">Continuously running process with no public address.</span></div></div>
+<div class="item"><div><a href="#" id="m-cron">Cron Job</a><br><span class="note">Short-lived task that runs on a schedule.</span></div></div>
+<div class="item"><div><a href="#" id="m-postgres">Postgres</a><br><span class="note">Managed relational database.</span></div></div>
+<div class="item"><div><a href="#" id="m-kv">Key Value</a><br><span class="note">Managed in-memory data store for caching.</span></div></div>
+<div class="item"><div><a href="#" id="m-blueprint">Blueprint</a><br><span class="note">Group of services and databases, defined in a render.yaml file in your repository.</span></div></div>
+<div class="item"><div><a href="#" id="m-project">Project</a><br><span class="note">Group services into environments such as staging and production.</span></div></div></div>''')
+
 # ---------- Supabase 風 ----------
 page("sb_function.html", "apply | Edge Functions", SB, '''
 <h1>apply</h1><h2>Function Configuration</h2>
@@ -156,6 +169,14 @@ SCENARIOS = [
     sc("rd_new_name", "rd_new.html", "Web サービスを作りたい（名前は my-api）", ["#svc-name"]),
     sc("rd_new_deploy", "rd_new.html", "Web サービスを作りたい（名前は my-api）", ["#deploy"],
        setup=[{"fill": "#svc-name", "value": "my-api"}]),
+    sc("rd_menu_web", "rd_menu.html", "Python（Flask）の Web アプリを公開したい", ["#m-web"]),
+    sc("rd_menu_web2", "rd_menu.html", "Python で Web サーバーを動かしたい", ["#m-web"]),
+    sc("rd_menu_static", "rd_menu.html", "HTML と CSS だけのページを公開したい", ["#m-static"]),
+    sc("rd_menu_cron", "rd_menu.html", "毎日決まった時刻に Python のスクリプトを実行したい", ["#m-cron"]),
+    sc("rd_menu_blueprint", "rd_menu.html", "リポジトリの render.yaml から、サービスをまとめて作りたい", ["#m-blueprint"]),
+    sc("rd_menu_vague1", "rd_menu.html", "新しいプロジェクトを作りたい", ["#m-web", "#m-project"], human=True),
+    sc("rd_menu_vague2", "rd_menu.html", "GitHub のリポジトリを Render にデプロイしたい", ["#m-web"], human=True),
+    sc("rd_menu_vague3", "rd_menu.html", "", ["#m-web"], human=True),
     sc("rd_env_tab", "rd_service.html", "環境変数を設定する画面を開きたい", ["#tab-env"]),
     sc("rd_env_add", "rd_env.html", "環境変数を1つ追加したい", ["#add-env"]),
     sc("rd_suspend", "rd_settings.html", "サービスを一時停止したい", ["#suspend"], caution=True),

@@ -128,6 +128,95 @@
     "allow_human": false
   },
   {
+    "id": "rd_menu_web",
+    "page": "rd_menu.html",
+    "goal": "Python（Flask）の Web アプリを公開したい",
+    "setup": [],
+    "expected": [
+      "#m-web"
+    ],
+    "expect_caution": false,
+    "allow_human": false
+  },
+  {
+    "id": "rd_menu_web2",
+    "page": "rd_menu.html",
+    "goal": "Python で Web サーバーを動かしたい",
+    "setup": [],
+    "expected": [
+      "#m-web"
+    ],
+    "expect_caution": false,
+    "allow_human": false
+  },
+  {
+    "id": "rd_menu_static",
+    "page": "rd_menu.html",
+    "goal": "HTML と CSS だけのページを公開したい",
+    "setup": [],
+    "expected": [
+      "#m-static"
+    ],
+    "expect_caution": false,
+    "allow_human": false
+  },
+  {
+    "id": "rd_menu_cron",
+    "page": "rd_menu.html",
+    "goal": "毎日決まった時刻に Python のスクリプトを実行したい",
+    "setup": [],
+    "expected": [
+      "#m-cron"
+    ],
+    "expect_caution": false,
+    "allow_human": false
+  },
+  {
+    "id": "rd_menu_blueprint",
+    "page": "rd_menu.html",
+    "goal": "リポジトリの render.yaml から、サービスをまとめて作りたい",
+    "setup": [],
+    "expected": [
+      "#m-blueprint"
+    ],
+    "expect_caution": false,
+    "allow_human": false
+  },
+  {
+    "id": "rd_menu_vague1",
+    "page": "rd_menu.html",
+    "goal": "新しいプロジェクトを作りたい",
+    "setup": [],
+    "expected": [
+      "#m-web",
+      "#m-project"
+    ],
+    "expect_caution": false,
+    "allow_human": true
+  },
+  {
+    "id": "rd_menu_vague2",
+    "page": "rd_menu.html",
+    "goal": "GitHub のリポジトリを Render にデプロイしたい",
+    "setup": [],
+    "expected": [
+      "#m-web"
+    ],
+    "expect_caution": false,
+    "allow_human": true
+  },
+  {
+    "id": "rd_menu_vague3",
+    "page": "rd_menu.html",
+    "goal": "",
+    "setup": [],
+    "expected": [
+      "#m-web"
+    ],
+    "expect_caution": false,
+    "allow_human": true
+  },
+  {
     "id": "rd_env_tab",
     "page": "rd_service.html",
     "goal": "環境変数を設定する画面を開きたい",

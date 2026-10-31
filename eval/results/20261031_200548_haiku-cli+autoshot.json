@@ -1,0 +1,176 @@
+{
+  "summary": {
+    "mode": "haiku-cli+autoshot",
+    "total": 8,
+    "errors": 0,
+    "correct": 8,
+    "accuracy": 1.0,
+    "caution_ok": "0/0",
+    "avg_latency_s": 5.14,
+    "input_tokens": 30972,
+    "output_tokens": 4784
+  },
+  "results": [
+    {
+      "id": "rd_menu_web",
+      "ok": true,
+      "caution_ok": true,
+      "chosen": "m-web",
+      "expected": [
+        "#m-web"
+      ],
+      "reason": "Python（Flask）の Web アプリを公開するので、「Web Service（Webサービス）」を押します。",
+      "confidence": "high",
+      "caution": "",
+      "translation": "Web Service は、動的な Web アプリや API サーバーを動かす種類です。Flask のようにサーバー側でプログラムを実行するアプリに合います。Static Site は HTML などの静的なファイルだけを配信する種類で、Flask では使いません。Private Service は外部からアクセスできない種類です。Project は複数のサービスをまとめる入れ物で、公開先ではありません。",
+      "ask_human": false,
+      "latency": 5.28,
+      "usage": {
+        "input_tokens": 3872,
+        "output_tokens": 617
+      },
+      "n_elements": 13
+    },
+    {
+      "id": "rd_menu_web2",
+      "ok": true,
+      "caution_ok": true,
+      "chosen": "m-web",
+      "expected": [
+        "#m-web"
+      ],
+      "reason": "Python の Web サーバーなので「Web Service（Webサービス）」を選びます。",
+      "confidence": "high",
+      "caution": "",
+      "translation": "Web Service：動的な Web アプリ向けで、フルスタックのアプリや API サーバーに適しています。・Static Site は HTML などの静的な配信用、Background Worker は公開アドレスを持たない常駐処理用なので、Python の Web サーバーには合いません。",
+      "ask_human": false,
+      "latency": 4.7,
+      "usage": {
+        "input_tokens": 3869,
+        "output_tokens": 450
+      },
+      "n_elements": 13
+    },
+    {
+      "id": "rd_menu_static",
+      "ok": true,
+      "caution_ok": true,
+      "chosen": "m-static",
+      "expected": [
+        "#m-static"
+      ],
+      "reason": "HTMLとCSSだけなので「Static Site（静的サイト）」を押します。",
+      "confidence": "high",
+      "caution": "",
+      "translation": "Static Site（静的サイト）：HTMLやCSSなどの固定ファイルをそのまま世界中に公開する種類です。Web Service（Webサービス）は、Pythonなどのサーバー処理を動かす種類なので、HTMLとCSSだけなら不要です。",
+      "ask_human": false,
+      "latency": 4.55,
+      "usage": {
+        "input_tokens": 3868,
+        "output_tokens": 538
+      },
+      "n_elements": 13
+    },
+    {
+      "id": "rd_menu_cron",
+      "ok": true,
+      "caution_ok": true,
+      "chosen": "m-cron",
+      "expected": [
+        "#m-cron"
+      ],
+      "reason": "毎日決まった時刻に実行するなら「Cron Job（定期実行ジョブ）」を押します。",
+      "confidence": "high",
+      "caution": "",
+      "translation": "Cron Job は、決まった時刻に動いて終わる短時間のタスクです。Web Service（常時起動して外部からアクセスを受ける Web アプリ）や Background Worker（止まらず動き続ける処理）とは違い、スケジュールで定期実行したいスクリプトに向いています。",
+      "ask_human": false,
+      "latency": 4.95,
+      "usage": {
+        "input_tokens": 3877,
+        "output_tokens": 458
+      },
+      "n_elements": 13
+    },
+    {
+      "id": "rd_menu_blueprint",
+      "ok": true,
+      "caution_ok": true,
+      "chosen": "m-blueprint",
+      "expected": [
+        "#m-blueprint"
+      ],
+      "reason": "「Blueprint（ブループリント）」を押します。render.yamlを使ってまとめて作る場合の入口です。",
+      "confidence": "high",
+      "caution": "",
+      "translation": "Blueprint は、render.yaml に定義されたサービスやデータベースをまとめて作る方法です。Web Service は1つのサービスだけを個別に作る方法で、render.yaml を使わない場合はこちらを選びます。",
+      "ask_human": false,
+      "latency": 4.36,
+      "usage": {
+        "input_tokens": 3874,
+        "output_tokens": 411
+      },
+      "n_elements": 13
+    },
+    {
+      "id": "rd_menu_vague1",
+      "ok": true,
+      "caution_ok": true,
+      "chosen": "m-project",
+      "expected": [
+        "#m-web",
+        "#m-project"
+      ],
+      "reason": "Project（プロジェクト）を押します。画面外にあるので、下にスクロールして探してください。",
+      "confidence": "medium",
+      "caution": "",
+      "translation": "Project: サービスを staging（検証用）や production（本番用）などの環境ごとにまとめる入れ物です。デプロイ先ではなく、必須でもありません。",
+      "ask_human": false,
+      "latency": 6.03,
+      "usage": {
+        "input_tokens": 3873,
+        "output_tokens": 809
+      },
+      "n_elements": 13
+    },
+    {
+      "id": "rd_menu_vague2",
+      "ok": true,
+      "caution_ok": true,
+      "chosen": "m-web",
+      "expected": [
+        "#m-web"
+      ],
+      "reason": "「Web Service（Webサービス）」を押します。GitHubのWebアプリやAPIを動かす定番の選択です。",
+      "confidence": "high",
+      "caution": "",
+      "translation": "Web Service：Webアプリ・APIサーバーを動かすためのサービスで、デプロイ先として一般的です。Static Site（静的サイト）はHTMLなど動かないファイルだけの場合向けです。Private Service（非公開サービス）は外部に公開せず他のサービスからだけ使う用途です。Background Worker（常駐処理）は公開アドレスがない常時実行のプロセス、Cron Job（定期実行）は決まった時刻に動く処理です。Project（プロジェクト）はサービスをまとめる入れ物で、デプロイ先ではありません。",
+      "ask_human": false,
+      "latency": 6.21,
+      "usage": {
+        "input_tokens": 3876,
+        "output_tokens": 911
+      },
+      "n_elements": 13
+    },
+    {
+      "id": "rd_menu_vague3",
+      "ok": true,
+      "caution_ok": true,
+      "chosen": "m-web",
+      "expected": [
+        "#m-web"
+      ],
+      "reason": "Web Service（Webサービス）を押します。Python等のWebアプリやAPIを動かすときの作成先です。",
+      "confidence": "medium",
+      "caution": "",
+      "translation": "Web Service：動的なWebアプリやAPIサーバーを動かす種類です。Static Site：HTMLなど静的な内容を配信する種類です。Private Service：外部からは見えず、他のサービスからだけ使える種類です。Background Worker：公開アドレスなしで動き続ける処理です。Cron Job：決まった時刻に短時間動く処理です。Blueprint：render.yamlを使ってまとめて作る方式です。Project：サービスをまとめる入れ物で、デプロイ先ではありません。",
+      "ask_human": false,
+      "latency": 5.03,
+      "usage": {
+        "input_tokens": 3863,
+        "output_tokens": 590
+      },
+      "n_elements": 13
+    }
+  ]
+}

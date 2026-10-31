@@ -1,0 +1,168 @@
+{
+  "summary": {
+    "mode": "haiku-cli+autoshot",
+    "total": 8,
+    "errors": 0,
+    "correct": 7,
+    "accuracy": 0.875,
+    "caution_ok": "0/0",
+    "avg_latency_s": 4.92,
+    "input_tokens": 30980,
+    "output_tokens": 4056
+  },
+  "results": [
+    {
+      "id": "rd_menu_web",
+      "ok": false,
+      "caution_ok": true,
+      "chosen": "new-btn",
+      "expected": [
+        "#m-web"
+      ],
+      "reason": "「+ New（新規作成）」を押します。開いたメニューから Web Service を選びます。",
+      "confidence": "high",
+      "caution": "",
+      "ask_human": false,
+      "latency": 5.04,
+      "usage": {
+        "input_tokens": 3871,
+        "output_tokens": 512
+      },
+      "n_elements": 13
+    },
+    {
+      "id": "rd_menu_web2",
+      "ok": true,
+      "caution_ok": true,
+      "chosen": "m-web",
+      "expected": [
+        "#m-web"
+      ],
+      "reason": "Python の Web サーバーは「Web Service（Webサービス）」を選びます。このリンクを押してください。",
+      "confidence": "high",
+      "caution": "",
+      "ask_human": false,
+      "latency": 4.46,
+      "usage": {
+        "input_tokens": 3866,
+        "output_tokens": 513
+      },
+      "n_elements": 13
+    },
+    {
+      "id": "rd_menu_static",
+      "ok": true,
+      "caution_ok": true,
+      "chosen": "m-static",
+      "expected": [
+        "#m-static"
+      ],
+      "reason": "HTMLとCSSだけのページなので「Static Site（静的サイト）」を押します。",
+      "confidence": "high",
+      "caution": "",
+      "ask_human": false,
+      "latency": 3.96,
+      "usage": {
+        "input_tokens": 3872,
+        "output_tokens": 428
+      },
+      "n_elements": 13
+    },
+    {
+      "id": "rd_menu_cron",
+      "ok": true,
+      "caution_ok": true,
+      "chosen": "m-cron",
+      "expected": [
+        "#m-cron"
+      ],
+      "reason": "毎日決まった時刻に動かすため、「Cron Job（定期実行ジョブ）」を押します。",
+      "confidence": "high",
+      "caution": "",
+      "ask_human": false,
+      "latency": 4.51,
+      "usage": {
+        "input_tokens": 3876,
+        "output_tokens": 415
+      },
+      "n_elements": 13
+    },
+    {
+      "id": "rd_menu_blueprint",
+      "ok": true,
+      "caution_ok": true,
+      "chosen": "m-blueprint",
+      "expected": [
+        "#m-blueprint"
+      ],
+      "reason": "Blueprint（ブループリント）を押します。render.yamlでまとめて作成する方法です。",
+      "confidence": "high",
+      "caution": "",
+      "ask_human": false,
+      "latency": 4.65,
+      "usage": {
+        "input_tokens": 3879,
+        "output_tokens": 497
+      },
+      "n_elements": 13
+    },
+    {
+      "id": "rd_menu_vague1",
+      "ok": true,
+      "caution_ok": true,
+      "chosen": "m-project",
+      "expected": [
+        "#m-web",
+        "#m-project"
+      ],
+      "reason": "「Project（プロジェクト）」を押します。サービスをまとめる入れ物で、デプロイ先ではありません。",
+      "confidence": "high",
+      "caution": "",
+      "ask_human": false,
+      "latency": 5.7,
+      "usage": {
+        "input_tokens": 3872,
+        "output_tokens": 637
+      },
+      "n_elements": 13
+    },
+    {
+      "id": "rd_menu_vague2",
+      "ok": true,
+      "caution_ok": true,
+      "chosen": "m-web",
+      "expected": [
+        "#m-web"
+      ],
+      "reason": "「Web Service（Webサービス）」を押します。GitHubのリポジトリを動かす一般的な選択肢です。",
+      "confidence": "high",
+      "caution": "",
+      "ask_human": false,
+      "latency": 5.98,
+      "usage": {
+        "input_tokens": 3876,
+        "output_tokens": 525
+      },
+      "n_elements": 13
+    },
+    {
+      "id": "rd_menu_vague3",
+      "ok": true,
+      "caution_ok": true,
+      "chosen": "m-web",
+      "expected": [
+        "#m-web"
+      ],
+      "reason": "「Web Service（Webサービス）」を押します。Python などの Web アプリや API を動かすならこれを選びます。",
+      "confidence": "medium",
+      "caution": "",
+      "ask_human": false,
+      "latency": 5.04,
+      "usage": {
+        "input_tokens": 3868,
+        "output_tokens": 529
+      },
+      "n_elements": 13
+    }
+  ]
+}

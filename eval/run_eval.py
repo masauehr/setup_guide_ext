@@ -86,7 +86,7 @@ def run_one(page, sc, args):
     return {
         "id": sc["id"], "ok": ok, "caution_ok": caution_ok, "chosen": chosen,
         "expected": sc["expected"], "reason": res["reason"], "confidence": res["confidence"],
-        "caution": res["caution"], "ask_human": res["ask_human"],
+        "caution": res["caution"], "translation": res.get("translation", ""), "ask_human": res["ask_human"],
         "latency": res["latency"], "usage": res["usage"], "n_elements": len(collected["elements"]),
     }
 

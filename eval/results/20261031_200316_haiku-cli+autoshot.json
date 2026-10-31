@@ -1,0 +1,73 @@
+{
+  "summary": {
+    "mode": "haiku-cli+autoshot",
+    "total": 3,
+    "errors": 0,
+    "correct": 2,
+    "accuracy": 0.667,
+    "caution_ok": "0/0",
+    "avg_latency_s": 5.05,
+    "input_tokens": 10807,
+    "output_tokens": 1583
+  },
+  "results": [
+    {
+      "id": "rd_menu_vague1",
+      "ok": true,
+      "caution_ok": true,
+      "chosen": "m-project",
+      "expected": [
+        "#m-web",
+        "#m-project"
+      ],
+      "reason": "「Project（プロジェクト）」を押します。画面外にあるので、下にスクロールして探してください。",
+      "confidence": "high",
+      "caution": "",
+      "ask_human": false,
+      "latency": 5.3,
+      "usage": {
+        "input_tokens": 3601,
+        "output_tokens": 574
+      },
+      "n_elements": 13
+    },
+    {
+      "id": "rd_menu_vague2",
+      "ok": false,
+      "caution_ok": true,
+      "chosen": "new-btn",
+      "expected": [
+        "#m-web"
+      ],
+      "reason": "「+ New（新規作成）」を押します。メニューから Web Service（Webサービス）を選ぶ流れです。",
+      "confidence": "high",
+      "caution": "",
+      "ask_human": false,
+      "latency": 4.53,
+      "usage": {
+        "input_tokens": 3609,
+        "output_tokens": 454
+      },
+      "n_elements": 13
+    },
+    {
+      "id": "rd_menu_vague3",
+      "ok": true,
+      "caution_ok": true,
+      "chosen": "m-web",
+      "expected": [
+        "#m-web"
+      ],
+      "reason": "「Web Service（Webサービス）」を選びます。動的なWebアプリを作るときの一般的な選択肢です。",
+      "confidence": "medium",
+      "caution": "",
+      "ask_human": false,
+      "latency": 5.32,
+      "usage": {
+        "input_tokens": 3597,
+        "output_tokens": 555
+      },
+      "n_elements": 13
+    }
+  ]
+}

@@ -1,0 +1,110 @@
+{
+  "summary": {
+    "mode": "haiku-cli+autoshot",
+    "total": 5,
+    "errors": 0,
+    "correct": 5,
+    "accuracy": 1.0,
+    "caution_ok": "0/0",
+    "avg_latency_s": 4.35,
+    "input_tokens": 18034,
+    "output_tokens": 2016
+  },
+  "results": [
+    {
+      "id": "rd_menu_web",
+      "ok": true,
+      "caution_ok": true,
+      "chosen": "m-web",
+      "expected": [
+        "#m-web"
+      ],
+      "reason": "Flask アプリは動的 Web アプリなので、Web Service（Webサービス）を押します。",
+      "confidence": "high",
+      "caution": "",
+      "ask_human": false,
+      "latency": 4.36,
+      "usage": {
+        "input_tokens": 3602,
+        "output_tokens": 412
+      },
+      "n_elements": 13
+    },
+    {
+      "id": "rd_menu_web2",
+      "ok": true,
+      "caution_ok": true,
+      "chosen": "m-web",
+      "expected": [
+        "#m-web"
+      ],
+      "reason": "Python の Web サーバーなので、Web Service（Webサービス）を押します。",
+      "confidence": "high",
+      "caution": "",
+      "ask_human": false,
+      "latency": 4.02,
+      "usage": {
+        "input_tokens": 3604,
+        "output_tokens": 375
+      },
+      "n_elements": 13
+    },
+    {
+      "id": "rd_menu_static",
+      "ok": true,
+      "caution_ok": true,
+      "chosen": "m-static",
+      "expected": [
+        "#m-static"
+      ],
+      "reason": "HTMLとCSSだけなら「Static Site（静的サイト）」を押します。公開用の新しいサービスを作る画面に進みます。",
+      "confidence": "high",
+      "caution": "",
+      "ask_human": false,
+      "latency": 3.95,
+      "usage": {
+        "input_tokens": 3604,
+        "output_tokens": 448
+      },
+      "n_elements": 13
+    },
+    {
+      "id": "rd_menu_cron",
+      "ok": true,
+      "caution_ok": true,
+      "chosen": "m-cron",
+      "expected": [
+        "#m-cron"
+      ],
+      "reason": "毎日決まった時刻に実行するなら、Cron Job（定期実行ジョブ）を押します。",
+      "confidence": "high",
+      "caution": "",
+      "ask_human": false,
+      "latency": 4.59,
+      "usage": {
+        "input_tokens": 3612,
+        "output_tokens": 431
+      },
+      "n_elements": 13
+    },
+    {
+      "id": "rd_menu_blueprint",
+      "ok": true,
+      "caution_ok": true,
+      "chosen": "m-blueprint",
+      "expected": [
+        "#m-blueprint"
+      ],
+      "reason": "render.yaml からまとめて作るため、「Blueprint（ブループリント）」を押します。",
+      "confidence": "high",
+      "caution": "",
+      "ask_human": false,
+      "latency": 4.83,
+      "usage": {
+        "input_tokens": 3612,
+        "output_tokens": 350
+      },
+      "n_elements": 13
+    }
+  ]
+}
