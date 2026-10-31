@@ -28,6 +28,11 @@ const captureShot = async (tab) => {
 };
 
 // 画像は撮れたときだけ使う（activeTab が付いていないタブでは撮れない）
+// 画面の英文の日本語訳（あるときだけ）
+const transNote = (r) => (r.translation
+  ? `<div class="translation"><b>画面の英文の意味</b><br>${esc(r.translation).replace(/\n/g, '<br>')}</div>`
+  : '');
+
 const shotNote = (failed) => (failed
   ? '<div class="sub">画像は使えませんでした（文字情報だけで案内しています）。画像も使うには、このタブで拡張のアイコンを押してパネルを開き直してください。</div>'
   : '');
@@ -88,10 +93,10 @@ $('help').addEventListener('click', async () => {
       show(`${esc(r.reason)}` +
         (r.caution ? `<div class="caution">⚠ ${esc(r.caution)}</div>` : '') +
         (r.confidence === 'low' ? '<div class="sub">自信がありません。念のため確認してください。</div>' : '') +
-        shotNote(shotFailed));
+        transNote(r) + shotNote(shotFailed));
     } else {
       await chrome.scripting.executeScript({ target: { tabId: tab.id }, func: () => window.__tnmClear && window.__tnmClear() });
-      show(esc(r.reason || '公式ドキュメントや担当者に確認しましょう') + shotNote(shotFailed));
+      show(esc(r.reason || '公式ドキュメントや担当者に確認しましょう') + transNote(r) + shotNote(shotFailed));
     }
   } catch (e) {
     show(`<span class="error">${esc(e.message)}</span>`);
