@@ -48,7 +48,10 @@
     bubble.appendChild(close);
 
     root.append(frame, bubble);
-    document.documentElement.appendChild(root);
+    // モーダルダイアログ（<dialog>）はブラウザの最前面レイヤーに出るので、外に描くと隠れる。
+    // 操作対象がダイアログの中にあるときは、そのダイアログの中に描く
+    const host = target.closest('dialog[open], [role="dialog"], [aria-modal="true"]');
+    (host || document.documentElement).appendChild(root);
 
     const place = () => {
       if (!document.getElementById(ROOT_ID)) return;

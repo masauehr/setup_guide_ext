@@ -63,6 +63,16 @@ class PromptTest(unittest.TestCase):
         ],
     }
 
+    def test_ポップアップがあると最優先で伝える(self):
+        page = dict(self.PAGE, modal={"title": "Make repo public", "text": "The code will be visible to everyone."})
+        text = core.build_user_text(page)
+        self.assertIn("開いているポップアップ（最優先）", text)
+        self.assertIn("The code will be visible to everyone.", text)
+        self.assertLess(text.index("開いているポップアップ"), text.index("本文(抜粋)"))
+
+    def test_ポップアップがなければ節を出さない(self):
+        self.assertNotIn("開いているポップアップ", core.build_user_text(self.PAGE))
+
     def test_要素の行にフラグが付く(self):
         line = core.format_element(self.PAGE["elements"][0])
         self.assertIn("必須", line)

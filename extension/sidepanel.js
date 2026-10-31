@@ -27,6 +27,15 @@ const captureShot = async (tab) => {
   return { media_type: 'image/jpeg', data: url.split(',')[1] };
 };
 
+// 画像は撮れたときだけ使う（activeTab が付いていないタブでは撮れない）
+const shotNote = (failed) => (failed
+  ? '<div class="sub">画像は使えませんでした（文字情報だけで案内しています）。画像も使うには、このタブで拡張のアイコンを押してパネルを開き直してください。</div>'
+  : '');
+
+const tryShot = async (tab) => {
+  try { return await captureShot(tab); } catch (e) { return null; }
+};
+
 const askProxy = async (body) => {
   let res;
   try {
@@ -66,7 +75,11 @@ $('help').addEventListener('click', async () => {
       model: $('strong').checked ? 'sonnet' : 'haiku'
     };
     // 文字のないボタン（アイコン）があるときは、設定に関わらず画像も渡す
-    if ($('shot').checked || page.unlabeled > 0) body.screenshot = await captureShot(tab);
+    let shotFailed = false;
+    if ($('shot').checked || page.unlabeled > 0) {
+      const shot = await tryShot(tab);
+      if (shot) body.screenshot = shot; else shotFailed = true;
+    }
 
     const r = await askProxy(body);
     if (r.target_id) {
@@ -74,10 +87,11 @@ $('help').addEventListener('click', async () => {
       history.push(r.reason);
       show(`${esc(r.reason)}` +
         (r.caution ? `<div class="caution">⚠ ${esc(r.caution)}</div>` : '') +
-        (r.confidence === 'low' ? '<div class="sub">自信がありません。念のため確認してください。</div>' : ''));
+        (r.confidence === 'low' ? '<div class="sub">自信がありません。念のため確認してください。</div>' : '') +
+        shotNote(shotFailed));
     } else {
       await chrome.scripting.executeScript({ target: { tabId: tab.id }, func: () => window.__tnmClear && window.__tnmClear() });
-      show(esc(r.reason || '窓口やご家族に確認しましょう'));
+      show(esc(r.reason || '公式ドキュメントや担当者に確認しましょう') + shotNote(shotFailed));
     }
   } catch (e) {
     show(`<span class="error">${esc(e.message)}</span>`);

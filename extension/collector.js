@@ -105,6 +105,10 @@
     } catch (e) { return ''; }
   };
 
+  // 画面の最前面で開いているポップアップ（モーダル等）。複数あれば最後のものを採る
+  const MODAL_SELECTOR = 'dialog[open], [role="dialog"], [role="alertdialog"], [aria-modal="true"]';
+  const modalOf = () => [...document.querySelectorAll(MODAL_SELECTOR)].filter(isVisible).pop() || null;
+
   const collect = () => {
     document.querySelectorAll('[data-tnm-id]').forEach((e) => e.removeAttribute('data-tnm-id'));
     // 前回のハイライトが残っていると判定を邪魔するので先に消す
@@ -115,6 +119,9 @@
       if (el.type === 'password') return false;
       return isVisible(el);
     });
+    // ポップアップが開いているときは、背後のページは操作できないので、中の要素だけを対象にする
+    const modal = modalOf();
+    if (modal) cands = cands.filter((el) => modal.contains(el));
     if (cands.length > MAX_ELEMENTS) {
       const vis = new Set(cands.filter(inViewport));
       const rest = cands.filter((e) => !vis.has(e));
@@ -146,7 +153,13 @@
       .filter(isVisible).slice(0, 8).map((h) => clip(squash(h.innerText), 50));
     // 文字のない（アイコンだけの）操作対象。見分けるには画面の画像が要る
     const unlabeled = elements.filter((e) => !e.label && ['ボタン', 'リンク'].includes(e.kind)).length;
+    const modalInfo = modal ? {
+      title: clip(squash(modal.getAttribute('aria-label') ||
+        (modal.querySelector('h1, h2, h3, [role="heading"]') || {}).innerText || ''), 80),
+      text: clip(squash(modal.innerText), 800)
+    } : null;
     return {
+      modal: modalInfo,
       unlabeled,
       url: location.origin + location.pathname,
       title: document.title,
