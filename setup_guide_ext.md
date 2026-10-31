@@ -12,6 +12,8 @@ GitHub・Render（dashboard.render.com）・Supabase（supabase.com/dashboard）
 ```
 extension/   Chrome拡張(MV3)。サイドパネル＋画面収集(collector.js)＋ハイライト(overlay.js)
 proxy/       ローカルプロキシ(標準ライブラリのみ)。core.py=案内ロジックと秘密情報マスク、explain.py=英文の日本語説明、server.py=127.0.0.1:8787
+eval/        正答率の評価（架空ページ22件）。pages と scenarios.json は tools/build_eval_pages.py が生成
+tools/       評価ページの生成
 tests/       core.py などの単体テスト
 ```
 
@@ -38,10 +40,31 @@ python3 -m unittest discover -s tests      # 単体テスト
 - 2026-10-31: **XREA に対応**（`xrea_pages` で公開サイトを置いているレンタルサーバーの管理画面）。`host_permissions` に `https://*.xrea.com/*` を追加（管理画面は `https://cp.xrea.com/`。利用者に確認済みで、このパターンに含まれる）。案内に XREA 特有の取り消しにくい操作（.htaccess の編集、SSL の解除・再発行、FTP・DB パスワード変更、ドメイン・ファイル・DB・メールの削除、ネームサーバー変更、PHP バージョン変更、cron、契約の解約 など）の注意を追加。ダミー画面で、無料 SSL の設定と、HTTPS リダイレクトの手順（SSL 確認 → .htaccess）の案内を確認（実画面は未確認）
 - `manifest.json` の対象サイト限定が崩れていないかのテストを追加（`<all_urls>` を入れない、https のみ）
 - 単体テスト34件が通る
-- 未実施: Render・Supabase・XREA の実画面での確認、評価シナリオ（実画面のスナップショットによる精度評価）、アイコン画像、`TNM_` で始まる環境変数名の整理（tonari_no_mago 由来）
+- 2026-10-31: 評価基盤を追加（架空ページ22件。Haiku 22/22、注意書き 9/9）。詳細は下の「評価」
+- 未実施: Render・Supabase・XREA の実画面での確認、実画面のスナップショットによる精度評価、アイコン画像、`TNM_` で始まる環境変数名の整理（tonari_no_mago 由来）
 - 気づいた点: 吹き出しの日本語が分かりにくい場合がある（例: 「公開後も元に戻すと履歴は残ります」）。応答は CLI 経由で約4〜7秒
+
+## 評価（架空ページ22件）
+GitHub・Render・Supabase・XREA の画面構成を簡略に模した**架空ページ**（`eval/pages/`、16枚。実画面やロゴの複製ではない）で、「次に押す場所」の正答率を測る。実サイトはログインや秘密情報の問題があるため、まず架空ページで土台を作った。
+```
+python3 tools/build_eval_pages.py                              # ページと正解（eval/scenarios.json）を生成
+PY=~/projects/tonari_no_mago/.venv/bin/python                  # playwright 入りの Python
+TNM_BACKEND=cli $PY eval/run_eval.py --model haiku --auto-shot # CLI経由（サブスク）で評価
+$PY eval/run_eval.py --mock                                    # APIなし（下限の目安）
+```
+- シナリオ: GitHub 8件（リポジトリ作成の入力順、公開範囲の変更、削除、確認ダイアログ、Secrets、文中の「AIへの指示」）、Render 6件（作成フォーム、環境変数のタブと追加、一時停止、削除、目立つ「Upgrade」への惑わされ）、Supabase 4件（Verify JWT、RLS、SQL 実行、DB パスワード）、XREA 4件（無料SSL、.htaccess、ドメイン削除、FTP パスワード）
+- 指標: 正答率、取り消しにくい操作（9件）での注意書きの有無、応答時間、トークン数。判断を保留するのが妥当な1件（`sb_db_password`）は、保留も正解にする
+
+| 構成 | 正答 | 注意書き | 平均応答 | 入力/出力トークン |
+|------|------|------|------|------|
+| モック（API不使用・下限の目安） | 10/22 | 0/9 | - | - |
+| Haiku・CLI経由・自動画像（2026-10-31・各1回） | 22/22 | 9/9 | 4.4秒 | 72.0k / 10.0k |
+
+- **読み方**: 自作の単純なページを1回ずつ実行した結果で、傾向を見る程度。実サイトの画面はもっと複雑（要素が多い、動的に変わる、ポップアップが重なる）ので、全問正解は実画面での精度を保証しない。実機で見つかった問題（画像取得失敗、ダイアログ内の描画、ポップアップの認識）は、架空ページでは再現しにくい
+- 文中の「AIへの指示」（`gh_inject`）には従わず、目的どおり Settings を選べた
+- Sonnet・画像併用・複数回実行は未実施
 
 ## 次の候補
 1. 実機で GitHub・Render・Supabase・XREA の画面を試し、誤案内のパターンを集める
-2. 評価シナリオ（実画面のスナップショットを個人情報・秘密を伏せて保存）を作る
+2. 実画面のスナップショット（個人情報・秘密を伏せて保存）による評価を足す。架空ページ22件は作成済み
 3. 案内が安定したら、設定の提案・生成（B）を検討する

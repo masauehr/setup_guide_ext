@@ -1,0 +1,16 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Settings</title><style>body{font:16px/1.6 sans-serif;margin:0;color:#222}header{background:#24292f;color:#fff;padding:10px 20px}
+header a{color:#fff;margin-right:14px}main{max-width:760px;margin:0 auto;padding:20px}
+.row{margin:12px 0}label.name{display:inline-block;width:200px}input[type=text]{padding:6px;width:300px}
+button,.btn{padding:8px 16px;margin:4px 4px 4px 0;font-size:16px;cursor:pointer}
+.danger{border:2px solid #c62828;border-radius:8px;padding:8px 16px;margin:16px 0}
+.item{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #ddd;padding:8px 0}
+.banner{background:#fff3cd;border:1px solid #e0a800;padding:10px;margin:10px 0;display:flex;justify-content:space-between}
+.note{color:#666;font-size:14px}footer{color:#888;font-size:13px;padding:20px;text-align:center}</style></head><body><header><a href="#">Code</a><a href="#">Issues</a><a href="#">Pull requests</a><a href="#" id="tab-settings">Settings</a></header><main>
+<h1>Settings</h1><div class="danger"><h2>Danger Zone</h2>
+<div class="item"><b>Change repository visibility</b><button id="change-visibility">Change visibility</button></div>
+<div class="item"><b>Delete this repository</b><button id="delete-repo">Delete this repository</button></div></div>
+<dialog id="dlg" style="padding:24px;width:440px"><h2>Make example/my-site public</h2>
+<ul><li>The code will be visible to everyone who can visit the site.</li><li>Anyone can fork your repository.</li>
+<li>All push rulesets will be disabled.</li><li>Actions history and logs will be visible to everyone.</li></ul>
+<button id="cancel-dlg">Cancel</button><button id="confirm-effects">I have read and understand these effects</button></dialog>
+<script>document.getElementById('dlg').showModal();</script></main><footer>架空の評価用ページです（実在のサービスの画面ではありません）</footer></body></html>
