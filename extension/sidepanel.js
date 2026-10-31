@@ -107,3 +107,54 @@ $('help').addEventListener('click', async () => {
 
 // やりたいことを変えたら、これまでの案内の履歴は捨てる
 $('goal').addEventListener('input', () => { history.length = 0; });
+
+// ---------- 英文を日本語で説明 ----------
+const SOURCE_TEXT = { selection: '選択した文章を説明しています', popup: 'ポップアップの内容を説明しています', page: '画面の本文を説明しています' };
+
+const renderExplain = (r, source) => {
+  const html = [`<div class="sub">${esc(SOURCE_TEXT[source] || SOURCE_TEXT.page)}</div>`];
+  if (r.summary) html.push(`<p class="ex-summary">${esc(r.summary)}</p>`);
+  if (r.cautions && r.cautions.length) {
+    html.push('<div class="ex-caution"><b>⚠ 注意</b><ul>' + r.cautions.map((c) => `<li>${esc(c)}</li>`).join('') + '</ul></div>');
+  }
+  if (r.points && r.points.length) {
+    html.push('<ul class="ex-points">' + r.points.map((p) =>
+      `<li><span class="en">${esc(p.english)}</span>${esc(p.meaning)}</li>`).join('') + '</ul>');
+  }
+  html.push('<div class="sub">課金・削除・権限に関わる文は、原文も見て判断してください。</div>');
+  $('explain').innerHTML = html.join('');
+};
+
+$('explain-btn').addEventListener('click', async () => {
+  const btn = $('explain-btn');
+  btn.disabled = true;
+  $('explain').textContent = '英文を読んでいます…';
+  try {
+    const tab = await activeTab();
+    let doc;
+    try {
+      await chrome.scripting.executeScript({ target: { tabId: tab.id }, files: ['collector.js'] });
+      [{ result: doc }] = await chrome.scripting.executeScript({
+        target: { tabId: tab.id }, func: () => window.__tnmExplain()
+      });
+    } catch (e) {
+      throw new Error('このページでは使えません。GitHub か Render の画面で試してください。');
+    }
+    let res;
+    try {
+      res = await fetch(`${PROXY}/explain`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title: doc.title, text: doc.text, source: doc.source, model: $('strong').checked ? 'sonnet' : 'haiku' })
+      });
+    } catch (e) {
+      throw new Error('中継プログラムに接続できません。proxy/server.py が起動しているか確認してください。');
+    }
+    const json = await res.json();
+    if (!res.ok) throw new Error(json.error || '説明を取得できませんでした。');
+    renderExplain(json, doc.source);
+  } catch (e) {
+    $('explain').innerHTML = `<span class="error">${esc(e.message)}</span>`;
+  } finally {
+    btn.disabled = false;
+  }
+});

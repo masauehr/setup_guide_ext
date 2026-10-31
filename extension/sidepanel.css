@@ -39,3 +39,15 @@ details { margin-top: 24px; font-size: 16px; }
 details label { display: block; margin: 8px 0; }
 .note { font-size: 14px; color: #555; }
 #result .translation { margin-top: 12px; padding: 10px 12px; font-size: 16px; font-weight: normal; line-height: 1.6; background: #eef4ff; border: 2px solid #1a4fd6; border-radius: 8px; }
+#explain-btn { display: block; width: 100%; margin: 16px 0 4px; padding: 14px 0; font-size: 20px; font-weight: bold; color: #fff; background: #1a4fd6; border: none; border-radius: 12px; cursor: pointer; }
+#explain-btn:disabled { background: #bbb; cursor: wait; }
+#explain-btn:focus-visible { outline: 4px solid #ff6a00; outline-offset: 3px; }
+#explain { margin-top: 12px; font-size: 17px; line-height: 1.7; }
+#explain .sub { font-size: 14px; color: #555; margin: 6px 0; }
+#explain .error { color: #b00020; }
+#explain .ex-summary { font-weight: bold; margin: 8px 0; }
+#explain .ex-caution { background: #fde8e8; border: 2px solid #c62828; border-radius: 8px; padding: 8px 12px; margin: 10px 0; color: #8e0000; }
+#explain ul { margin: 4px 0; padding-left: 1.3em; }
+#explain .ex-points { list-style: none; padding: 0; }
+#explain .ex-points li { margin: 8px 0; padding: 8px 10px; background: #eef4ff; border-radius: 8px; }
+#explain .en { display: block; font-size: 14px; color: #555; margin-bottom: 2px; }

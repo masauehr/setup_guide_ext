@@ -177,6 +177,17 @@
     return { title: document.title, text: text.slice(0, 6000), truncated: text.length > 6000 };
   };
 
+  // 英文の説明用：選択した文章 > 開いているポップアップ > 画面の本文 の順に取る（入力欄の値は含まれない）
+  const explainDoc = () => {
+    const sel = squash(String(getSelection() || ''));
+    if (sel.length >= 2) return { title: document.title, source: 'selection', text: clip(sel, 5000) };
+    const modal = modalOf();
+    if (modal) return { title: document.title, source: 'popup', text: clip(squash(modal.innerText), 5000) };
+    const root = document.querySelector('main, article, [role="main"]') || document.body;
+    return { title: document.title, source: 'page', text: clip(squash(root.innerText), 5000) };
+  };
+
   window.__tnmCollect = collect;
+  window.__tnmExplain = explainDoc;
   window.__tnmExtract = extract;
 })();
