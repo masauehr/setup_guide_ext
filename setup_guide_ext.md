@@ -1,6 +1,6 @@
 # setup_guide_ext（設定ガイド）マニュアル
 
-GitHub と Render（dashboard.render.com）の設定画面で、「次はどこ？」を押すと、次に操作する場所を1つだけ光らせて理由を一言で教える Chrome 拡張（個人利用）。[tonari_no_mago](../tonari_no_mago) の画面ガイドを土台に新規作成した（2026-10-31）。
+GitHub と Render（dashboard.render.com）の設定画面で、「次はどこ？」を押すと、次に操作する場所を1つだけ光らせて理由を一言で教える Chrome 拡張（個人利用）。tonari_no_mago（別リポジトリ） の画面ガイドを土台に新規作成した（2026-10-31）。
 
 ## 方針
 - **案内だけ**を行う（Phase A）。設定の提案・生成（`render.yaml` や GitHub Actions の workflow）は、案内の精度を確かめてから別フェーズで検討する
