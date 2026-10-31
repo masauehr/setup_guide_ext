@@ -71,7 +71,7 @@ $('help').addEventListener('click', async () => {
     try {
       page = await collect(tab);
     } catch (e) {
-      throw new Error('このページでは使えません。GitHub・Render・Supabase の画面で試してください。');
+      throw new Error('このページでは使えません。GitHub・Render・Supabase・XREA の画面で試してください。');
     }
     const body = {
       page,
@@ -138,7 +138,7 @@ $('explain-btn').addEventListener('click', async () => {
         target: { tabId: tab.id }, func: () => window.__tnmExplain()
       });
     } catch (e) {
-      throw new Error('このページでは使えません。GitHub・Render・Supabase の画面で試してください。');
+      throw new Error('このページでは使えません。GitHub・Render・Supabase・XREA の画面で試してください。');
     }
     let res;
     try {
