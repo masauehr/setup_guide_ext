@@ -25,6 +25,7 @@ GitHub・Render・Supabase・XREA の設定画面で、次に操作する場所�
 | XREA | `https://*.xrea.com/*`（管理画面は `https://cp.xrea.com/`） | `.htaccess` の編集（誤ると 500 エラー）、SSL の解除・再発行、FTP・DB パスワード変更、ドメイン・ファイル・DB・メールの削除、ネームサーバー変更、PHP バージョン変更、cron、契約の解約 |
 
 - 上記以外のサイトでは動かない（`<all_urls>` は使わない。`tests/test_manifest.py` が崩れを検知）
+- Supabase で「一時的な secret キーを作りたい」と入力すると、Settings → API Keys → Secret keys の New secret key で作成 → 名前に用途と日付 → 作業後に削除、の順で案内する（プロンプトのルール16）。既存キーの再生成はせず、作った一時キーだけを後で消す。画面が手順と違うときは推測せず人に確認する。**実画面では未確認**
 - Supabase は `map_registry`、XREA は `xrea_pages`（uehr.net の公開）で使っている設定の支援が目的
 
 ## 3. 構成
