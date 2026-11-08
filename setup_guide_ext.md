@@ -68,6 +68,7 @@ python3 -m unittest discover -s tests      # 単体テスト
 | Supabase | SQL Editor／Edge Functions／テーブルの RLS を開く | 画面の見分け、日本語訳の質、RLS の説明 |
 | XREA | ドメイン設定・SSL 設定の状態を確認する（変更しない） | 日本語画面でのメニューの見分け |
 | cron-job.org | 「CREATE CRONJOB」を開く、Advanced の画面を開く（保存しない） | 入力順、Advanced の見つけやすさ、ヘッダー欄での秘密情報の注意 |
+| GitHub → cron-job.org | 「cron-job.org から GitHub Actions を5分ごとに起動したい」と入力し、トークン作成画面と、ジョブ作成の COMMON／ADVANCED を順に開く（**Generate token と CREATE は押さない**。トークンの値は貼らない） | ルール17の手順どおりに案内されるか（対象1リポジトリ・Actions の Read and write・POST・Bearer・TEST RUN→CLOSE→CREATE の順）。参照元の記録は `~/projects/taiwan_radar_frames/CRON_JOB_ORG.md` |
 
 - 課金プランの変更、削除、解約、パスワード変更は、**確定まで進まない**（注意書きが出るかを見る）
 - Supabase の API キー・service_role・DB パスワード、XREA の FTP・DB パスワード、cron-job.org の API キーやヘッダー値が表示された画面は、マスクの確認が済むまで避ける
@@ -122,6 +123,7 @@ $PY eval/run_eval.py --mock                                    # APIなし（下
 - 実画面での確認: **GitHub のみ**（リポジトリを public にする操作で、確認ダイアログのボタンへの案内を確認。公開自体も実際に行った）
 - **未実施**: Render・Supabase・XREA・cron-job.org の実画面での確認（cron-job.org は URL の確認も含む）、実画面のスナップショットによる評価、Sonnet・画像併用の評価、アイコン画像（今は Chrome の仮アイコン）、`TNM_` で始まる環境変数名の整理（tonari_no_mago 由来）
 - **未解決**: Render で「Blueprint を選べ」と案内された原因（架空ページでは再現せず）。次に起きたら、そのときの「やりたいこと」と画面のスクリーンショットを控える
+- cron-job.org の追加（2026-11-08）: `taiwan_radar_frames`（台湾レーダー配信を cron-job.org から5分ごとに起動）の設定記録を元にルール17と評価ページを作った。対象サイトは `console.cron-job.org` と `cron-job.org` の両方（本体の `cron-job.org/en/` で「対応していません」と出たため後者を追加）。実画面の URL・画面構成は未確認で、案内の誤りは架空ページでは再現しない可能性がある
 - 既知の癖: 吹き出しの日本語が分かりにくい場合がある（例: 「公開後も元に戻すと履歴は残ります」）、文頭の括弧が欠けることがある。応答は CLI 経由で約4〜7秒。サブスクの利用枠を消費する
 
 ## 9. 再開するとき
@@ -138,6 +140,7 @@ $PY eval/run_eval.py --mock                                    # APIなし（下
 4. 案内が安定したら、設定の提案・生成（B）を検討する。Cとして、`gh` CLI や API による設定の自動適用もありうるが、トークンの権限管理と書き込み前の確認画面が必要で、誤操作の影響が大きいため最後にする
 
 ## 11. 設計メモ
+- **評価ページの作り方（cron-job.org で得た教訓）**: 「前の操作が済んだ」ことを画面に出す（例: `Last test run: 204 No Content`）。出さないと、正解（CREATE）が人にも判断できず、誤答に見える。ダイアログが開いた状態は `setup` の `eval` ステップ（`page.evaluate`）で再現できる
 - **新規に作り直した理由**: tonari_no_mago は高齢者向けに「次に押す場所を1つだけ」案内し、代行しない設計。開発者向けの設定支援は、専門知識・取り消しにくい操作への注意・秘密情報の扱いが必要で、対象と評価の作り方が別物になるため。画面収集・ハイライト・プロキシ・CLI/API 切り替え・評価基盤の仕組みは流用した（やさしい表示と詐欺判定は持ち込まない）
 - API キーは拡張に持たせず、ローカルプロキシに置く（CLI 経由ならキー不要）
 - 画面の文章はデータであり、文中の指示には従わない（プロンプトのルール11）
