@@ -1,0 +1,35 @@
+{
+  "summary": {
+    "mode": "haiku-cli+autoshot",
+    "total": 1,
+    "errors": 0,
+    "correct": 1,
+    "accuracy": 1.0,
+    "caution_ok": "0/0",
+    "avg_latency_s": 4.7,
+    "input_tokens": 4773,
+    "output_tokens": 540
+  },
+  "results": [
+    {
+      "id": "cj_save",
+      "ok": true,
+      "caution_ok": true,
+      "chosen": "cj-create",
+      "expected": [
+        "#cj-create"
+      ],
+      "reason": "テスト成功を確認できたので、CREATE（作成・保存）を押します。押すと定期実行が始まります。",
+      "confidence": "high",
+      "caution": "保存後は設定した間隔で GitHub の workflow が自動で起動します（POST で別のサービスを動かす設定です）。",
+      "translation": "",
+      "ask_human": false,
+      "latency": 4.7,
+      "usage": {
+        "input_tokens": 4773,
+        "output_tokens": 540
+      },
+      "n_elements": 5
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "summary": {
+    "mode": "haiku-cli+autoshot",
+    "total": 1,
+    "errors": 0,
+    "correct": 1,
+    "accuracy": 1.0,
+    "caution_ok": "0/0",
+    "avg_latency_s": 4.81,
+    "input_tokens": 4792,
+    "output_tokens": 612
+  },
+  "results": [
+    {
+      "id": "cj_test_close",
+      "ok": true,
+      "caution_ok": true,
+      "chosen": "cj-test-close",
+      "expected": [
+        "#cj-test-close"
+      ],
+      "reason": "テスト画面を閉じるため「CLOSE」を押します。閉じたあと、ページの「CREATE」で保存します。",
+      "confidence": "high",
+      "caution": "",
+      "translation": "Test run（テスト実行）Status: 204 No Content（成功を示す応答）(1.85 seconds)。Closing this window does not save the job.（このウィンドウを閉じてもジョブは保存されません。）",
+      "ask_human": false,
+      "latency": 4.81,
+      "usage": {
+        "input_tokens": 4792,
+        "output_tokens": 612
+      },
+      "n_elements": 1
+    }
+  ]
+}

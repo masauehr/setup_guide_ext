@@ -28,6 +28,7 @@ GitHub・Render・Supabase・XREA・cron-job.org の設定画面で、次に操�
 | cron-job.org | `https://console.cron-job.org/*`、`https://cron-job.org/*`（案内ページ・ログイン） | ジョブの削除、実行間隔を短くする（1分ごとなど。呼び出し先に負荷）、ヘッダー・ボディへの Authorization やトークンの入力（履歴に残りうる）、POST・PUT・DELETE など呼び出し先のデータを変える HTTP メソッド、REST API キーの作成、アカウント削除 |
 
 - 上記以外のサイトでは動かない（`<all_urls>` は使わない。`tests/test_manifest.py` が崩れを検知）
+- cron-job.org から GitHub Actions を定期起動したい（GitHub API の `workflow_dispatch` を POST で呼ぶ）と入力すると、GitHub の Fine-grained token 作成（対象は1リポジトリ・Actions の Read and write のみ）→ cron-job.org の COMMON／ADVANCED（POST・body `{"ref":"main"}`・Authorization ヘッダー）→ TEST RUN → CLOSE → CREATE の順で案内する（プロンプトのルール17）。手順は `taiwan_radar_frames/CRON_JOB_ORG.md` の実際の設定記録に基づく。**ルール17の実画面での案内は未確認**
 - Supabase で「一時的な secret キーを作りたい」と入力すると、Settings → API Keys → Secret keys の New secret key で作成 → 名前に用途と日付 → 作業後に削除、の順で案内する（プロンプトのルール16）。既存キーの再生成はせず、作った一時キーだけを後で消す。画面が手順と違うときは推測せず人に確認する。**実画面では未確認**
 - Supabase は `map_registry`、XREA は `xrea_pages`（uehr.net の公開）、cron-job.org は Render の無料サービスの起こし直しや GitHub Actions の起動などの定期呼び出しで使っている設定の支援が目的。**cron-job.org の管理画面 URL（`console.cron-job.org`）は実画面で未確認**。違っていたら `manifest.json` を直す
 
@@ -36,7 +37,7 @@ GitHub・Render・Supabase・XREA・cron-job.org の設定画面で、次に操�
 extension/   Chrome拡張(MV3)。サイドパネル＋画面収集(collector.js)＋ハイライト(overlay.js)
 proxy/       ローカルプロキシ(標準ライブラリのみ)
              core.py=案内ロジックと秘密情報マスク、explain.py=英文の日本語説明、server.py=127.0.0.1:8787
-eval/        正答率の評価（架空ページ36件）。pages と scenarios.json は tools/build_eval_pages.py が生成
+eval/        正答率の評価（架空ページ40件）。pages と scenarios.json は tools/build_eval_pages.py が生成
 tools/       評価ページの生成
 tests/       単体テスト（34件）
 ```
@@ -84,14 +85,14 @@ python3 -m unittest discover -s tests      # 単体テスト
 **伏せる文字列（`core.py` の `mask_pii`）**: 電話番号・メール・郵便番号・12桁番号、GitHub のトークン（`ghp_…`・`github_pat_…`）、Render のキー（`rnd_…`）、Supabase の secret キー（`sb_secret_…`）と JWT 形式のキー（service_role／anon）、AWS のキー、`sk-…` 形式のキー、Slack のトークン、接続 URL 内のパスワード、`KEY=値`（名前に secret・token・password・api_key を含むもの）、40桁以上の16進数。リンク先 URL も同様に伏せる。**正規表現による検出なので、形式が特殊な秘密情報は漏れうる**。画面の内容は Claude に送られる点に注意
 
 ## 6. 評価（架空ページ36件）
-GitHub・Render・Supabase・XREA・cron-job.org の画面構成を簡略に模した**架空ページ**（`eval/pages/`、21枚。実画面やロゴの複製ではない）で、「次に押す場所」の正答率を測る。実サイトはログインや秘密情報の問題があるため、まず架空ページで土台を作った。
+GitHub・Render・Supabase・XREA・cron-job.org の画面構成を簡略に模した**架空ページ**（`eval/pages/`、23枚。実画面やロゴの複製ではない）で、「次に押す場所」の正答率を測る。実サイトはログインや秘密情報の問題があるため、まず架空ページで土台を作った。
 ```
 python3 tools/build_eval_pages.py                              # ページと正解（eval/scenarios.json）を生成
 PY=~/projects/tonari_no_mago/.venv/bin/python                  # playwright 入りの Python（なければ python3 -m venv .venv && .venv/bin/pip install playwright）
 TNM_BACKEND=cli $PY eval/run_eval.py --model haiku --auto-shot # CLI経由（サブスク）で評価。--only rd_menu のように前方一致で絞れる
 $PY eval/run_eval.py --mock                                    # APIなし（下限の目安）
 ```
-- シナリオ: GitHub 8件（リポジトリ作成の入力順、公開範囲の変更、削除、確認ダイアログ、Secrets、文中の「AIへの指示」）、Render 14件（作成フォーム、環境変数のタブと追加、一時停止、削除、目立つ「Upgrade」への惑わされ、「+ New」メニューの種類選び8件）、Supabase 4件（Verify JWT、RLS、SQL 実行、DB パスワード）、XREA 4件（無料SSL、.htaccess、ドメイン削除、FTP パスワード）、cron-job.org 6件（ジョブ作成、入力順、Advanced、ヘッダーへの秘密情報、API キー作成、アカウント削除）
+- シナリオ: GitHub 8件（リポジトリ作成の入力順、公開範囲の変更、削除、確認ダイアログ、Secrets、文中の「AIへの指示」）、Render 14件（作成フォーム、環境変数のタブと追加、一時停止、削除、目立つ「Upgrade」への惑わされ、「+ New」メニューの種類選び8件）、Supabase 4件（Verify JWT、RLS、SQL 実行、DB パスワード）、XREA 4件（無料SSL、.htaccess、ドメイン削除、FTP パスワード）、cron-job.org 6件（ジョブ作成、入力順、Advanced、ヘッダーへの秘密情報、API キー作成、アカウント削除）、cron-job.org の保存手順 2件（TEST RUN 後の CLOSE、CREATE）、GitHub のトークン作成 2件（対象リポジトリの限定、生成）
 - 指標: 正答率、取り消しにくい操作（9件）での注意書きの有無、応答時間、トークン数。判断を保留するのが妥当な1件（`sb_db_password`）は、保留も正解にする
 
 | 構成 | 正答 | 注意書き | 平均応答 | 入力/出力トークン |
@@ -100,6 +101,7 @@ $PY eval/run_eval.py --mock                                    # APIなし（下
 | Haiku・CLI経由・自動画像・22件（2026-10-31・各1回） | 22/22 | 9/9 | 4.4秒 | 72.0k / 10.0k |
 | Haiku・CLI経由・自動画像・メニュー選択8件（修正後・2回） | 7/8、8/8 | - | - | - |
 | Haiku・CLI経由・自動画像・cron-job.org 6件（2026-11-08・1回） | 6/6 | 3/3 | 4.5秒 | 24.8k / 2.6k |
+| 同・保存手順とトークン作成の4件（2026-11-08・1回。cj_save は手がかり不足のページを直して再実行） | 4/4 | 1/1 | - | - |
 
 - **読み方**: 自作の単純なページを1回ずつ実行した結果で、傾向を見る程度。実サイトの画面はもっと複雑（要素が多い、動的に変わる、ポップアップが重なる）ので、全問正解は実画面での精度を保証しない。実機で見つかった問題（画像取得失敗、ダイアログ内の描画、ポップアップの認識）は、架空ページでは再現しにくい。1件差は揺れの範囲
 - 文中の「AIへの指示」（`gh_inject`）には従わず、目的どおり Settings を選べた

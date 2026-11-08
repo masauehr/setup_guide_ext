@@ -1,0 +1,55 @@
+{
+  "summary": {
+    "mode": "haiku-cli+autoshot",
+    "total": 2,
+    "errors": 0,
+    "correct": 2,
+    "accuracy": 1.0,
+    "caution_ok": "1/1",
+    "avg_latency_s": 4.33,
+    "input_tokens": 10016,
+    "output_tokens": 886
+  },
+  "results": [
+    {
+      "id": "gh_token_repo",
+      "ok": true,
+      "caution_ok": true,
+      "chosen": "ra-select",
+      "expected": [
+        "#ra-select"
+      ],
+      "reason": "Repository access（リポジトリへのアクセス）で「Only select repositories（選んだリポジトリだけ）」を選びます。",
+      "confidence": "high",
+      "caution": "",
+      "translation": "Only select repositories：選んだリポジトリだけにアクセスを許可する。今は Public repositories (read-only)（公開リポジトリの読み取りだけ）が選ばれているため、これを変えます。",
+      "ask_human": false,
+      "latency": 4.69,
+      "usage": {
+        "input_tokens": 5017,
+        "output_tokens": 490
+      },
+      "n_elements": 10
+    },
+    {
+      "id": "gh_token_generate",
+      "ok": true,
+      "caution_ok": true,
+      "chosen": "tk-generate",
+      "expected": [
+        "#tk-generate"
+      ],
+      "reason": "必須項目は入力・選択済みです。「Generate token（トークンを生成）」を押します。",
+      "confidence": "high",
+      "caution": "トークンは一度しか表示されません。チャットやファイルに貼らず、cron-job.org のヘッダーにだけ貼ってください。",
+      "translation": "",
+      "ask_human": false,
+      "latency": 3.97,
+      "usage": {
+        "input_tokens": 4999,
+        "output_tokens": 396
+      },
+      "n_elements": 10
+    }
+  ]
+}

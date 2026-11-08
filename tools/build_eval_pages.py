@@ -175,6 +175,27 @@ page("cj_settings.html", "Settings - cron-job.org", CJ, '''
 <h1>Settings</h1><h2>API</h2><p class="note">Create an API key to manage your cron jobs through the REST API. Treat the key like a password.</p>
 <button id="cj-apikey">Create API key</button>
 <div class="danger"><h2>Danger Zone</h2><div class="item"><b>Delete account</b><button id="cj-delacct">Delete account</button></div></div>''')
+page("cj_testrun.html", "Create cronjob - cron-job.org", CJ, '''
+<h1>Create cronjob</h1><p class="note">Title: dispatch-job / URL: https://api.github.com/repos/example/my-repo/actions/workflows/update.yml/dispatches</p>
+<p>Last test run: <b>204 No Content</b> (success)</p>
+<button id="cj-test" type="button">TEST RUN</button><button id="cj-create" type="button">CREATE</button>
+<dialog id="dlg" style="padding:24px;width:440px"><h2>Test run</h2><p>Status: <b>204 No Content</b> (1.85 seconds)</p>
+<p class="note">Closing this window does not save the job.</p>
+<button id="cj-test-close" type="button">CLOSE</button></dialog>
+<script>document.getElementById('dlg').showModal();</script>''')
+
+# GitHub の細かい権限のトークン作成（架空・値なし）
+page("gh_token.html", "New fine-grained personal access token", GH, '''
+<h1>New fine-grained personal access token</h1>
+<div class="row"><label class="name" for="tk-name">Token name *</label><input type="text" id="tk-name" required></div>
+<div class="row"><label class="name" for="tk-exp">Expiration</label><select id="tk-exp"><option>30 days</option><option>90 days</option><option>No expiration</option></select></div>
+<h2>Repository access</h2>
+<div class="row"><label><input type="radio" name="ra" id="ra-public" checked> Public repositories (read-only)</label></div>
+<div class="row"><label><input type="radio" name="ra" id="ra-all"> All repositories</label></div>
+<div class="row"><label><input type="radio" name="ra" id="ra-select"> Only select repositories</label></div>
+<h2>Permissions</h2><p class="note">Repository permissions: Actions — Access: Read and write</p>
+<button id="tk-generate" type="button">Generate token</button>''')
+
 
 def sc(id_, page_, goal, expected, caution=False, human=False, setup=None):
     return {"id": id_, "page": page_, "goal": goal, "setup": setup or [],
@@ -222,6 +243,13 @@ SCENARIOS = [
     sc("cj_header_secret", "cj_advanced.html", "Authorization ヘッダーにトークンを入れたい", ["#cj-hval", "#cj-hname"], caution=True),
     sc("cj_apikey", "cj_settings.html", "REST API キーを作りたい", ["#cj-apikey"], caution=True),
     sc("cj_delete_account", "cj_settings.html", "アカウントを削除したい", ["#cj-delacct"], caution=True),
+    sc("cj_test_close", "cj_testrun.html", "テスト実行が204で成功した。ジョブを保存したい（テスト画面が出ている）", ["#cj-test-close"]),
+    sc("cj_save", "cj_testrun.html", "テスト実行は成功済み。ジョブを保存して定期実行を始めたい", ["#cj-create"],
+       setup=[{"eval": "document.getElementById('dlg').close()"}]),
+    sc("gh_token_repo", "gh_token.html", "GitHub Actions を外部から起動する専用トークンを作りたい。対象は1つのリポジトリだけにしたい", ["#ra-select"],
+       setup=[{"fill": "#tk-name", "value": "dispatch-token"}]),
+    sc("gh_token_generate", "gh_token.html", "専用トークンを作りたい（名前・対象・権限は設定済み）", ["#tk-generate"], caution=True,
+       setup=[{"fill": "#tk-name", "value": "dispatch-token"}, {"check": "#ra-select"}]),
 ]
 
 if __name__ == "__main__":

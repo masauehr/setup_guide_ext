@@ -50,6 +50,8 @@ def apply_setup(page, setup):
             page.check(step["check"])
         elif "select" in step:
             page.select_option(step["select"], step["value"])
+        elif "eval" in step:
+            page.evaluate(step["eval"])
 
 
 def run_one(page, sc, args):

@@ -1,0 +1,35 @@
+{
+  "summary": {
+    "mode": "haiku-cli+autoshot",
+    "total": 1,
+    "errors": 0,
+    "correct": 0,
+    "accuracy": 0.0,
+    "caution_ok": "0/0",
+    "avg_latency_s": 6.68,
+    "input_tokens": 4745,
+    "output_tokens": 984
+  },
+  "results": [
+    {
+      "id": "cj_save",
+      "ok": false,
+      "caution_ok": true,
+      "chosen": "cj-test",
+      "expected": [
+        "#cj-create"
+      ],
+      "reason": "TEST RUN（テスト実行）を押します。204 No Content なら成功です。確認後に CREATE（作成）で保存します。",
+      "confidence": "medium",
+      "caution": "テスト実行で、GitHub のワークフローが1回実際に起動します。",
+      "translation": "",
+      "ask_human": false,
+      "latency": 6.68,
+      "usage": {
+        "input_tokens": 4745,
+        "output_tokens": 984
+      },
+      "n_elements": 5
+    }
+  ]
+}

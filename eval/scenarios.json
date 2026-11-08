@@ -424,5 +424,66 @@
     ],
     "expect_caution": true,
     "allow_human": false
+  },
+  {
+    "id": "cj_test_close",
+    "page": "cj_testrun.html",
+    "goal": "テスト実行が204で成功した。ジョブを保存したい（テスト画面が出ている）",
+    "setup": [],
+    "expected": [
+      "#cj-test-close"
+    ],
+    "expect_caution": false,
+    "allow_human": false
+  },
+  {
+    "id": "cj_save",
+    "page": "cj_testrun.html",
+    "goal": "テスト実行は成功済み。ジョブを保存して定期実行を始めたい",
+    "setup": [
+      {
+        "eval": "document.getElementById('dlg').close()"
+      }
+    ],
+    "expected": [
+      "#cj-create"
+    ],
+    "expect_caution": false,
+    "allow_human": false
+  },
+  {
+    "id": "gh_token_repo",
+    "page": "gh_token.html",
+    "goal": "GitHub Actions を外部から起動する専用トークンを作りたい。対象は1つのリポジトリだけにしたい",
+    "setup": [
+      {
+        "fill": "#tk-name",
+        "value": "dispatch-token"
+      }
+    ],
+    "expected": [
+      "#ra-select"
+    ],
+    "expect_caution": false,
+    "allow_human": false
+  },
+  {
+    "id": "gh_token_generate",
+    "page": "gh_token.html",
+    "goal": "専用トークンを作りたい（名前・対象・権限は設定済み）",
+    "setup": [
+      {
+        "fill": "#tk-name",
+        "value": "dispatch-token"
+      },
+      {
+        "check": "#ra-select"
+      }
+    ],
+    "expected": [
+      "#tk-generate"
+    ],
+    "expect_caution": true,
+    "allow_human": false
   }
 ]
