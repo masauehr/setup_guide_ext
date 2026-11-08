@@ -25,7 +25,7 @@ GitHub・Render・Supabase・XREA・cron-job.org の設定画面で、次に操�
 | Render | `https://dashboard.render.com/*` | サービスの削除・一時停止、本番デプロイ、課金プランの変更 |
 | Supabase | `https://supabase.com/dashboard/*` | プロジェクトの削除・一時停止、DB パスワードのリセット、service_role／secret キーの表示・再生成、RLS の無効化、破壊的な SQL（DROP・DELETE・TRUNCATE）、Storage の公開、Verify JWT の無効化、ユーザー削除 |
 | XREA | `https://*.xrea.com/*`（管理画面は `https://cp.xrea.com/`） | `.htaccess` の編集（誤ると 500 エラー）、SSL の解除・再発行、FTP・DB パスワード変更、ドメイン・ファイル・DB・メールの削除、ネームサーバー変更、PHP バージョン変更、cron、契約の解約 |
-| cron-job.org | `https://console.cron-job.org/*` | ジョブの削除、実行間隔を短くする（1分ごとなど。呼び出し先に負荷）、ヘッダー・ボディへの Authorization やトークンの入力（履歴に残りうる）、POST・PUT・DELETE など呼び出し先のデータを変える HTTP メソッド、REST API キーの作成、アカウント削除 |
+| cron-job.org | `https://console.cron-job.org/*`、`https://cron-job.org/*`（案内ページ・ログイン） | ジョブの削除、実行間隔を短くする（1分ごとなど。呼び出し先に負荷）、ヘッダー・ボディへの Authorization やトークンの入力（履歴に残りうる）、POST・PUT・DELETE など呼び出し先のデータを変える HTTP メソッド、REST API キーの作成、アカウント削除 |
 
 - 上記以外のサイトでは動かない（`<all_urls>` は使わない。`tests/test_manifest.py` が崩れを検知）
 - Supabase で「一時的な secret キーを作りたい」と入力すると、Settings → API Keys → Secret keys の New secret key で作成 → 名前に用途と日付 → 作業後に削除、の順で案内する（プロンプトのルール16）。既存キーの再生成はせず、作った一時キーだけを後で消す。画面が手順と違うときは推測せず人に確認する。**実画面では未確認**

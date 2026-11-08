@@ -20,7 +20,7 @@ class ManifestTest(unittest.TestCase):
         hosts = MANIFEST["host_permissions"]
         for site in ("https://github.com/*", "https://dashboard.render.com/*",
                      "https://supabase.com/dashboard/*", "https://*.xrea.com/*",
-                     "https://console.cron-job.org/*"):
+                     "https://console.cron-job.org/*", "https://cron-job.org/*"):
             self.assertIn(site, hosts)
 
     def test_httpsだけ(self):
