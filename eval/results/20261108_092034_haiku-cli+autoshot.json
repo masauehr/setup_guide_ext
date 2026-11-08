@@ -1,0 +1,137 @@
+{
+  "summary": {
+    "mode": "haiku-cli+autoshot",
+    "total": 6,
+    "errors": 0,
+    "correct": 6,
+    "accuracy": 1.0,
+    "caution_ok": "3/3",
+    "avg_latency_s": 4.51,
+    "input_tokens": 24770,
+    "output_tokens": 2564
+  },
+  "results": [
+    {
+      "id": "cj_new_button",
+      "ok": true,
+      "caution_ok": true,
+      "chosen": "create-job",
+      "expected": [
+        "#create-job"
+      ],
+      "reason": "「CREATE CRONJOB」（新しいcronジョブの作成）を押します。毎朝8時の設定に進めます。",
+      "confidence": "high",
+      "caution": "",
+      "translation": "CREATE CRONJOB（新しいcronジョブを作る）ボタンです。ジョブの設定画面が開きます。",
+      "ask_human": false,
+      "latency": 5.41,
+      "usage": {
+        "input_tokens": 4080,
+        "output_tokens": 250
+      },
+      "n_elements": 5
+    },
+    {
+      "id": "cj_new_url",
+      "ok": true,
+      "caution_ok": true,
+      "chosen": "cj-url",
+      "expected": [
+        "#cj-title",
+        "#cj-url"
+      ],
+      "reason": "必須のURL欄（URL *）に、呼び出したいURLを入力します。まず入力欄を選びます。",
+      "confidence": "high",
+      "caution": "",
+      "translation": "",
+      "ask_human": false,
+      "latency": 4.33,
+      "usage": {
+        "input_tokens": 4222,
+        "output_tokens": 413
+      },
+      "n_elements": 9
+    },
+    {
+      "id": "cj_new_advanced",
+      "ok": true,
+      "caution_ok": true,
+      "chosen": "cj-advanced",
+      "expected": [
+        "#cj-advanced"
+      ],
+      "reason": "「ADVANCED」を押します。ここでリクエストメソッド（Request method）を POST に変えられます。",
+      "confidence": "high",
+      "caution": "",
+      "translation": "",
+      "ask_human": false,
+      "latency": 3.73,
+      "usage": {
+        "input_tokens": 4218,
+        "output_tokens": 353
+      },
+      "n_elements": 9
+    },
+    {
+      "id": "cj_header_secret",
+      "ok": true,
+      "caution_ok": true,
+      "chosen": "cj-hname",
+      "expected": [
+        "#cj-hval",
+        "#cj-hname"
+      ],
+      "reason": "Header key（ヘッダー名）の欄を選び、Authorization と入力します。次に値を入れます。",
+      "confidence": "high",
+      "caution": "トークンは平文で保存され、ジョブの履歴に見えることがあります。",
+      "translation": "「Headers are stored in plain text and may be visible in the job history.」＝ヘッダーは平文（暗号化されない文字のまま）で保存され、ジョブ履歴で他人に見えることがあります、という意味です。",
+      "ask_human": false,
+      "latency": 4.77,
+      "usage": {
+        "input_tokens": 4167,
+        "output_tokens": 574
+      },
+      "n_elements": 8
+    },
+    {
+      "id": "cj_apikey",
+      "ok": true,
+      "caution_ok": true,
+      "chosen": "cj-apikey",
+      "expected": [
+        "#cj-apikey"
+      ],
+      "reason": "「Create API key（APIキーを作成）」を押します。作成後のキーはパスワードと同じ扱いにしてください。",
+      "confidence": "high",
+      "caution": "APIキーはcron-job.orgのジョブをREST APIで操作できる権限を持ちます。作成後の値は外部に漏らさず、パスワードと同じように保管してください。",
+      "translation": "REST APIを通じてcronジョブを管理するためのAPIキーを作成する、という説明です。「Treat the key like a password（キーはパスワードと同様に扱ってください）」とあり、キーを他人に見せないよう注意が必要です。",
+      "ask_human": false,
+      "latency": 4.57,
+      "usage": {
+        "input_tokens": 4041,
+        "output_tokens": 512
+      },
+      "n_elements": 5
+    },
+    {
+      "id": "cj_delete_account",
+      "ok": true,
+      "caution_ok": true,
+      "chosen": "cj-delacct",
+      "expected": [
+        "#cj-delacct"
+      ],
+      "reason": "「Delete account（アカウント削除）」を押します。確認画面が出たら内容をよく読んでから進めてください。",
+      "confidence": "high",
+      "caution": "アカウントと登録済みのcronジョブが削除され、元に戻せません。",
+      "translation": "「Delete account」は「アカウントを削除」という意味です。押すと、アカウントの削除手続きが始まります。",
+      "ask_human": false,
+      "latency": 4.24,
+      "usage": {
+        "input_tokens": 4042,
+        "output_tokens": 462
+      },
+      "n_elements": 5
+    }
+  ]
+}

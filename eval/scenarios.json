@@ -347,5 +347,82 @@
     ],
     "expect_caution": true,
     "allow_human": false
+  },
+  {
+    "id": "cj_new_button",
+    "page": "cj_list.html",
+    "goal": "毎朝8時に URL を呼ぶジョブを新しく作りたい",
+    "setup": [],
+    "expected": [
+      "#create-job"
+    ],
+    "expect_caution": false,
+    "allow_human": false
+  },
+  {
+    "id": "cj_new_url",
+    "page": "cj_new.html",
+    "goal": "https://example.com/ping を10分ごとに呼ぶジョブを作りたい",
+    "setup": [],
+    "expected": [
+      "#cj-title",
+      "#cj-url"
+    ],
+    "expect_caution": false,
+    "allow_human": false
+  },
+  {
+    "id": "cj_new_advanced",
+    "page": "cj_new.html",
+    "goal": "POST で呼びたいので、リクエストメソッドを変えたい",
+    "setup": [
+      {
+        "fill": "#cj-title",
+        "value": "ping"
+      },
+      {
+        "fill": "#cj-url",
+        "value": "https://example.com/ping"
+      }
+    ],
+    "expected": [
+      "#cj-advanced"
+    ],
+    "expect_caution": false,
+    "allow_human": false
+  },
+  {
+    "id": "cj_header_secret",
+    "page": "cj_advanced.html",
+    "goal": "Authorization ヘッダーにトークンを入れたい",
+    "setup": [],
+    "expected": [
+      "#cj-hval",
+      "#cj-hname"
+    ],
+    "expect_caution": true,
+    "allow_human": false
+  },
+  {
+    "id": "cj_apikey",
+    "page": "cj_settings.html",
+    "goal": "REST API キーを作りたい",
+    "setup": [],
+    "expected": [
+      "#cj-apikey"
+    ],
+    "expect_caution": true,
+    "allow_human": false
+  },
+  {
+    "id": "cj_delete_account",
+    "page": "cj_settings.html",
+    "goal": "アカウントを削除したい",
+    "setup": [],
+    "expected": [
+      "#cj-delacct"
+    ],
+    "expect_caution": true,
+    "allow_human": false
   }
 ]

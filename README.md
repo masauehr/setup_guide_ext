@@ -2,10 +2,10 @@
 
 詳しくは [setup_guide_ext.md](setup_guide_ext.md) を参照
 
-GitHub・Render・Supabase・XREA の設定画面で、次に操作する場所を1つだけ光らせて理由を一言で教える Chrome 拡張（個人利用）。英語の画面は日本語で説明する。tonari_no_mago（別リポジトリ）の画面ガイドを土台に、2026-10-31 に新規作成した。
+GitHub・Render・Supabase・XREA・cron-job.org の設定画面で、次に操作する場所を1つだけ光らせて理由を一言で教える Chrome 拡張（個人利用）。英語の画面は日本語で説明する。tonari_no_mago（別リポジトリ）の画面ガイドを土台に、2026-10-31 に新規作成した。
 
 - リポジトリ: https://github.com/masauehr/setup_guide_ext （public）
-- 状態: **使いながら更新していく段階**（2026-10-31 時点。GitHub は実画面で確認済み、Render・Supabase・XREA は実画面での確認がこれから）
+- 状態: **使いながら更新していく段階**（2026-11-08 時点。GitHub は実画面で確認済み、Render・Supabase・XREA・cron-job.org は実画面での確認がこれから。cron-job.org は 2026-11-08 に追加）
 
 ## 1. 何ができるか
 | 機能 | 使い方 | 出るもの |
@@ -25,17 +25,18 @@ GitHub・Render・Supabase・XREA の設定画面で、次に操作する場所�
 | Render | `https://dashboard.render.com/*` | サービスの削除・一時停止、本番デプロイ、課金プランの変更 |
 | Supabase | `https://supabase.com/dashboard/*` | プロジェクトの削除・一時停止、DB パスワードのリセット、service_role／secret キーの表示・再生成、RLS の無効化、破壊的な SQL（DROP・DELETE・TRUNCATE）、Storage の公開、Verify JWT の無効化、ユーザー削除 |
 | XREA | `https://*.xrea.com/*`（管理画面は `https://cp.xrea.com/`） | `.htaccess` の編集（誤ると 500 エラー）、SSL の解除・再発行、FTP・DB パスワード変更、ドメイン・ファイル・DB・メールの削除、ネームサーバー変更、PHP バージョン変更、cron、契約の解約 |
+| cron-job.org | `https://console.cron-job.org/*` | ジョブの削除、実行間隔を短くする（1分ごとなど。呼び出し先に負荷）、ヘッダー・ボディへの Authorization やトークンの入力（履歴に残りうる）、POST・PUT・DELETE など呼び出し先のデータを変える HTTP メソッド、REST API キーの作成、アカウント削除 |
 
 - 上記以外のサイトでは動かない（`<all_urls>` は使わない。`tests/test_manifest.py` が崩れを検知）
 - Supabase で「一時的な secret キーを作りたい」と入力すると、Settings → API Keys → Secret keys の New secret key で作成 → 名前に用途と日付 → 作業後に削除、の順で案内する（プロンプトのルール16）。既存キーの再生成はせず、作った一時キーだけを後で消す。画面が手順と違うときは推測せず人に確認する。**実画面では未確認**
-- Supabase は `map_registry`、XREA は `xrea_pages`（uehr.net の公開）で使っている設定の支援が目的
+- Supabase は `map_registry`、XREA は `xrea_pages`（uehr.net の公開）、cron-job.org は Render の無料サービスの起こし直しや GitHub Actions の起動などの定期呼び出しで使っている設定の支援が目的。**cron-job.org の管理画面 URL（`console.cron-job.org`）は実画面で未確認**。違っていたら `manifest.json` を直す
 
 ## 3. 構成
 ```
 extension/   Chrome拡張(MV3)。サイドパネル＋画面収集(collector.js)＋ハイライト(overlay.js)
 proxy/       ローカルプロキシ(標準ライブラリのみ)
              core.py=案内ロジックと秘密情報マスク、explain.py=英文の日本語説明、server.py=127.0.0.1:8787
-eval/        正答率の評価（架空ページ30件）。pages と scenarios.json は tools/build_eval_pages.py が生成
+eval/        正答率の評価（架空ページ36件）。pages と scenarios.json は tools/build_eval_pages.py が生成
 tools/       評価ページの生成
 tests/       単体テスト（34件）
 ```
@@ -51,8 +52,8 @@ python3 proxy/server.py --mock             # APIなしの動作確認
 python3 -m unittest discover -s tests      # 単体テスト
 ```
 - `127.0.0.1:8787` だけで待ち受け、Origin が `chrome-extension://` 以外の呼び出しは拒否する。止めるときは `lsof -ti :8787 -sTCP:LISTEN | xargs kill`
-- 拡張の読み込み: `chrome://extensions` →「デベロッパーモード」→「パッケージ化されていない拡張機能を読み込む」で `extension/` を選ぶ。**「となりの孫」とは別の拡張**として表示される（名前は「設定ガイド（GitHub・Render・Supabase・XREA）」）
-- **権限を増やしたとき（対象サイトの追加）は、拡張を再読み込みして、新しい権限を承認する**（Supabase と XREA の追加時が該当）
+- 拡張の読み込み: `chrome://extensions` →「デベロッパーモード」→「パッケージ化されていない拡張機能を読み込む」で `extension/` を選ぶ。**「となりの孫」とは別の拡張**として表示される（名前は「設定ガイド（GitHub・Render・Supabase・XREA・cron-job.org）」）
+- **権限を増やしたとき（対象サイトの追加）は、拡張を再読み込みして、新しい権限を承認する**（Supabase・XREA・cron-job.org の追加時が該当）
 - ツールバーのアイコンでサイドパネルを開く。「やりたいこと」は空でも動くが、書くと精度が上がる。**目的は具体的に書く**（例: 「Python の Web サーバーを公開したい」。「新しいプロジェクトを作りたい」は、Render で Project を選ぶなど迷いやすい）
 - 画像も使いたいときは、そのタブで拡張のアイコンを押してパネルを開き直す（`activeTab` が付くため）
 - 設定: 「くわしく調べる」= Sonnet／「画面の画像も使う」= スクリーンショットも送る。文字のないボタンがある画面では、設定に関わらず自動で画像も送ろうとする（撮れなければ文字情報だけで案内し、その旨を表示）
@@ -67,9 +68,10 @@ python3 -m unittest discover -s tests      # 単体テスト
 | Render | Settings の Danger Zone を開く（押さない） | 削除・一時停止での注意書き |
 | Supabase | SQL Editor／Edge Functions／テーブルの RLS を開く | 画面の見分け、日本語訳の質、RLS の説明 |
 | XREA | ドメイン設定・SSL 設定の状態を確認する（変更しない） | 日本語画面でのメニューの見分け |
+| cron-job.org | 「CREATE CRONJOB」を開く、Advanced の画面を開く（保存しない） | 入力順、Advanced の見つけやすさ、ヘッダー欄での秘密情報の注意 |
 
 - 課金プランの変更、削除、解約、パスワード変更は、**確定まで進まない**（注意書きが出るかを見る）
-- Supabase の API キー・service_role・DB パスワード、XREA の FTP・DB パスワードが表示された画面は、マスクの確認が済むまで避ける
+- Supabase の API キー・service_role・DB パスワード、XREA の FTP・DB パスワード、cron-job.org の API キーやヘッダー値が表示された画面は、マスクの確認が済むまで避ける
 - 試した結果は、①案内が誤った場所を指した（画面と、何を指したか）、②赤枠が出ない・ずれた・隠れた、③案内が出ない・エラー、④注意書きが出るべき操作で出なかった、⑤日本語や訳が分かりにくい、の形で控えておくと、原因の切り分けが早い（スクリーンショットがあるとよい）。プロキシのログ（メソッド・結果・トークン数だけ。画面の内容は残さない）も手がかりになる
 
 ## 5. 仕組みと、送る情報
@@ -81,15 +83,15 @@ python3 -m unittest discover -s tests      # 単体テスト
 
 **伏せる文字列（`core.py` の `mask_pii`）**: 電話番号・メール・郵便番号・12桁番号、GitHub のトークン（`ghp_…`・`github_pat_…`）、Render のキー（`rnd_…`）、Supabase の secret キー（`sb_secret_…`）と JWT 形式のキー（service_role／anon）、AWS のキー、`sk-…` 形式のキー、Slack のトークン、接続 URL 内のパスワード、`KEY=値`（名前に secret・token・password・api_key を含むもの）、40桁以上の16進数。リンク先 URL も同様に伏せる。**正規表現による検出なので、形式が特殊な秘密情報は漏れうる**。画面の内容は Claude に送られる点に注意
 
-## 6. 評価（架空ページ30件）
-GitHub・Render・Supabase・XREA の画面構成を簡略に模した**架空ページ**（`eval/pages/`、17枚。実画面やロゴの複製ではない）で、「次に押す場所」の正答率を測る。実サイトはログインや秘密情報の問題があるため、まず架空ページで土台を作った。
+## 6. 評価（架空ページ36件）
+GitHub・Render・Supabase・XREA・cron-job.org の画面構成を簡略に模した**架空ページ**（`eval/pages/`、21枚。実画面やロゴの複製ではない）で、「次に押す場所」の正答率を測る。実サイトはログインや秘密情報の問題があるため、まず架空ページで土台を作った。
 ```
 python3 tools/build_eval_pages.py                              # ページと正解（eval/scenarios.json）を生成
 PY=~/projects/tonari_no_mago/.venv/bin/python                  # playwright 入りの Python（なければ python3 -m venv .venv && .venv/bin/pip install playwright）
 TNM_BACKEND=cli $PY eval/run_eval.py --model haiku --auto-shot # CLI経由（サブスク）で評価。--only rd_menu のように前方一致で絞れる
 $PY eval/run_eval.py --mock                                    # APIなし（下限の目安）
 ```
-- シナリオ: GitHub 8件（リポジトリ作成の入力順、公開範囲の変更、削除、確認ダイアログ、Secrets、文中の「AIへの指示」）、Render 14件（作成フォーム、環境変数のタブと追加、一時停止、削除、目立つ「Upgrade」への惑わされ、「+ New」メニューの種類選び8件）、Supabase 4件（Verify JWT、RLS、SQL 実行、DB パスワード）、XREA 4件（無料SSL、.htaccess、ドメイン削除、FTP パスワード）
+- シナリオ: GitHub 8件（リポジトリ作成の入力順、公開範囲の変更、削除、確認ダイアログ、Secrets、文中の「AIへの指示」）、Render 14件（作成フォーム、環境変数のタブと追加、一時停止、削除、目立つ「Upgrade」への惑わされ、「+ New」メニューの種類選び8件）、Supabase 4件（Verify JWT、RLS、SQL 実行、DB パスワード）、XREA 4件（無料SSL、.htaccess、ドメイン削除、FTP パスワード）、cron-job.org 6件（ジョブ作成、入力順、Advanced、ヘッダーへの秘密情報、API キー作成、アカウント削除）
 - 指標: 正答率、取り消しにくい操作（9件）での注意書きの有無、応答時間、トークン数。判断を保留するのが妥当な1件（`sb_db_password`）は、保留も正解にする
 
 | 構成 | 正答 | 注意書き | 平均応答 | 入力/出力トークン |
@@ -97,6 +99,7 @@ $PY eval/run_eval.py --mock                                    # APIなし（下
 | モック（API不使用・下限の目安）・22件 | 10/22 | 0/9 | - | - |
 | Haiku・CLI経由・自動画像・22件（2026-10-31・各1回） | 22/22 | 9/9 | 4.4秒 | 72.0k / 10.0k |
 | Haiku・CLI経由・自動画像・メニュー選択8件（修正後・2回） | 7/8、8/8 | - | - | - |
+| Haiku・CLI経由・自動画像・cron-job.org 6件（2026-11-08・1回） | 6/6 | 3/3 | 4.5秒 | 24.8k / 2.6k |
 
 - **読み方**: 自作の単純なページを1回ずつ実行した結果で、傾向を見る程度。実サイトの画面はもっと複雑（要素が多い、動的に変わる、ポップアップが重なる）ので、全問正解は実画面での精度を保証しない。実機で見つかった問題（画像取得失敗、ダイアログ内の描画、ポップアップの認識）は、架空ページでは再現しにくい。1件差は揺れの範囲
 - 文中の「AIへの指示」（`gh_inject`）には従わず、目的どおり Settings を選べた
@@ -115,9 +118,9 @@ $PY eval/run_eval.py --mock                                    # APIなし（下
 | Render の「+ New」で、メニューの意味が分からない | メニューの選択肢の意味と違いを案内していなかった | 選んだ項目の意味と違いを `translation` に出す（上の「評価」参照） |
 
 ## 8. 現在の状況
-- 実装済み: 画面ガイド、ポップアップ対応、英文の日本語説明、秘密情報のマスク、対象サイトの限定（4サービス）、評価基盤、単体テスト34件
+- 実装済み: 画面ガイド、ポップアップ対応、英文の日本語説明、秘密情報のマスク、対象サイトの限定（5サービス）、評価基盤、単体テスト34件
 - 実画面での確認: **GitHub のみ**（リポジトリを public にする操作で、確認ダイアログのボタンへの案内を確認。公開自体も実際に行った）
-- **未実施**: Render・Supabase・XREA の実画面での確認、実画面のスナップショットによる評価、Sonnet・画像併用の評価、アイコン画像（今は Chrome の仮アイコン）、`TNM_` で始まる環境変数名の整理（tonari_no_mago 由来）
+- **未実施**: Render・Supabase・XREA・cron-job.org の実画面での確認（cron-job.org は URL の確認も含む）、実画面のスナップショットによる評価、Sonnet・画像併用の評価、アイコン画像（今は Chrome の仮アイコン）、`TNM_` で始まる環境変数名の整理（tonari_no_mago 由来）
 - **未解決**: Render で「Blueprint を選べ」と案内された原因（架空ページでは再現せず）。次に起きたら、そのときの「やりたいこと」と画面のスクリーンショットを控える
 - 既知の癖: 吹き出しの日本語が分かりにくい場合がある（例: 「公開後も元に戻すと履歴は残ります」）、文頭の括弧が欠けることがある。応答は CLI 経由で約4〜7秒。サブスクの利用枠を消費する
 
@@ -129,8 +132,8 @@ $PY eval/run_eval.py --mock                                    # APIなし（下
 - よくあるつまずき: ①「中継プログラムに接続できません」→ プロキシが起動していない ②赤枠が出ない → 拡張の再読み込み、対象がポップアップ内か ③画像が使えない → そのタブでアイコンを押してパネルを開き直す ④CLI 経由で応答が止まる → 60秒で打ち切って1回やり直す（`TNM_CLI_TIMEOUT`）。続くときは `claude` の利用枠・ログイン状態を確認
 
 ## 10. 次の候補
-1. 実機で Render・Supabase・XREA の画面を試し、誤案内のパターンを集める（使いながら更新）
-2. 実画面のスナップショット（個人情報・秘密を伏せて保存）による評価を足す。架空ページ30件は作成済み
+1. 実機で Render・Supabase・XREA・cron-job.org の画面を試し、誤案内のパターンを集める（使いながら更新）
+2. 実画面のスナップショット（個人情報・秘密を伏せて保存）による評価を足す。架空ページ36件は作成済み
 3. 吹き出しの日本語の調整
 4. 案内が安定したら、設定の提案・生成（B）を検討する。Cとして、`gh` CLI や API による設定の自動適用もありうるが、トークンの権限管理と書き込み前の確認画面が必要で、誤操作の影響が大きいため最後にする
 

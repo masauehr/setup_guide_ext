@@ -19,7 +19,8 @@ class ManifestTest(unittest.TestCase):
     def test_対象サイトが入っている(self):
         hosts = MANIFEST["host_permissions"]
         for site in ("https://github.com/*", "https://dashboard.render.com/*",
-                     "https://supabase.com/dashboard/*", "https://*.xrea.com/*"):
+                     "https://supabase.com/dashboard/*", "https://*.xrea.com/*",
+                     "https://console.cron-job.org/*"):
             self.assertIn(site, hosts)
 
     def test_httpsだけ(self):

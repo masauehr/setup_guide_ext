@@ -1,4 +1,4 @@
-"""設定ガイド（GitHub・Render・Supabase・XREA）の正答率を測る評価スクリプト。
+"""設定ガイド（GitHub・Render・Supabase・XREA・cron-job.org）の正答率を測る評価スクリプト。
 
 架空の評価ページ（eval/pages）を実際のChromiumで開き、拡張機能と同じ collector.js で要素を集め、
 Claude（またはモック）に「次に押す場所」を答えさせて正解と比べる。

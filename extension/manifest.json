@@ -1,10 +1,10 @@
 {
   "manifest_version": 3,
-  "name": "設定ガイド（GitHub・Render・Supabase・XREA）",
+  "name": "設定ガイド（GitHub・Render・Supabase・XREA・cron-job.org）",
   "version": "0.1.0",
-  "description": "GitHub・Render・Supabase・XREA の設定画面で、次に押す場所を1つだけ光らせて教えます。",
+  "description": "GitHub・Render・Supabase・XREA・cron-job.org の設定画面で、次に押す場所を1つだけ光らせて教えます。",
   "permissions": ["scripting", "sidePanel", "activeTab", "tabs"],
-  "host_permissions": ["https://github.com/*", "https://dashboard.render.com/*", "https://supabase.com/dashboard/*", "https://*.xrea.com/*"],
+  "host_permissions": ["https://github.com/*", "https://dashboard.render.com/*", "https://supabase.com/dashboard/*", "https://*.xrea.com/*", "https://console.cron-job.org/*"],
   "background": { "service_worker": "background.js" },
   "side_panel": { "default_path": "sidepanel.html" },
   "action": { "default_title": "設定ガイドを開く" }

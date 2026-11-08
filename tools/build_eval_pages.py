@@ -1,6 +1,6 @@
 """評価用の架空ページと正解データ（eval/scenarios.json）を生成する。
 
-実サービス（GitHub・Render・Supabase・XREA）の画面構成を簡略に模した架空のページ。
+実サービス（GitHub・Render・Supabase・XREA・cron-job.org）の画面構成を簡略に模した架空のページ。
 実際の画面やロゴの複製ではなく、ダミーデータだけを使う。
 
     python3 tools/build_eval_pages.py
@@ -32,6 +32,7 @@ def page(name, title, nav, body, lang="en"):
 GH = '<a href="#">Code</a><a href="#">Issues</a><a href="#">Pull requests</a><a href="#" id="tab-settings">Settings</a>'
 RD = '<a href="#">Dashboard</a><a href="#">Services</a><a href="#">Account Settings</a>'
 SB = '<a href="#">Table Editor</a><a href="#">SQL Editor</a><a href="#">Edge Functions</a><a href="#">Settings</a>'
+CJ = '<a href="#">Cron jobs</a><a href="#">History</a><a href="#">Settings</a>'
 XR = '<a href="#">ホーム</a><a href="#">ドメイン</a><a href="#">FTP</a><a href="#">契約情報</a>'
 
 # ---------- GitHub 風 ----------
@@ -149,6 +150,31 @@ page("xr_ftp.html", "FTPアカウント - コントロールパネル", XR, '''
 <div class="item"><span>アカウント: （ダミー）</span><button id="ftp-pw-change">パスワードを変更する</button></div>
 <button id="ftp-add">アカウントを追加する</button>''', "ja")
 
+# ---------- cron-job.org 風 ----------
+page("cj_list.html", "Cron jobs - cron-job.org", CJ, '''
+<h1>Cron jobs</h1><p class="note">Your jobs are executed on schedule. Next execution is shown per job.</p>
+<button id="create-job">CREATE CRONJOB</button>
+<div class="item"><span>wake-render (every 10 minutes) — Enabled</span><a href="#" id="job-edit">Edit</a></div>''')
+
+page("cj_new.html", "Create cronjob - cron-job.org", CJ, '''
+<h1>Create cronjob</h1>
+<div class="row"><label class="name" for="cj-title">Title</label><input type="text" id="cj-title" required></div>
+<div class="row"><label class="name" for="cj-url">URL *</label><input type="text" id="cj-url" required></div>
+<div class="row"><label class="name" for="cj-sched">Execution schedule</label><select id="cj-sched"><option>Every 5 minutes</option><option>Every 1 minute</option><option>Every day</option></select></div>
+<div class="row"><label><input type="checkbox" id="cj-notify"> Notify me when the job fails</label></div>
+<div class="row"><a href="#" id="cj-advanced">ADVANCED</a> <span class="note">Request method, headers, request body, timeout</span></div>
+<button id="cj-create" type="button">CREATE</button>''')
+
+page("cj_advanced.html", "Create cronjob - cron-job.org", CJ, '''
+<h1>Create cronjob — Advanced</h1>
+<div class="row"><label class="name" for="cj-method">Request method</label><select id="cj-method"><option>GET</option><option>POST</option><option>DELETE</option></select></div>
+<div class="row"><label class="name" for="cj-hname">Header key</label><input type="text" id="cj-hname"><label class="name" for="cj-hval">Header value</label><input type="text" id="cj-hval"> <span class="note">Headers are stored in plain text and may be visible in the job history.</span></div>
+<button id="cj-add-header" type="button">ADD HEADER</button><button id="cj-save" type="button">SAVE</button>''')
+
+page("cj_settings.html", "Settings - cron-job.org", CJ, '''
+<h1>Settings</h1><h2>API</h2><p class="note">Create an API key to manage your cron jobs through the REST API. Treat the key like a password.</p>
+<button id="cj-apikey">Create API key</button>
+<div class="danger"><h2>Danger Zone</h2><div class="item"><b>Delete account</b><button id="cj-delacct">Delete account</button></div></div>''')
 
 def sc(id_, page_, goal, expected, caution=False, human=False, setup=None):
     return {"id": id_, "page": page_, "goal": goal, "setup": setup or [],
@@ -189,6 +215,13 @@ SCENARIOS = [
     sc("xr_htaccess", "xr_domain.html", ".htaccess を編集したい", ["#htaccess"], caution=True),
     sc("xr_domain_delete", "xr_domain.html", "ドメイン設定を削除したい", ["#domain-delete"], caution=True),
     sc("xr_ftp_pw", "xr_ftp.html", "FTPのパスワードを変更したい", ["#ftp-pw-change"], caution=True),
+    sc("cj_new_button", "cj_list.html", "毎朝8時に URL を呼ぶジョブを新しく作りたい", ["#create-job"]),
+    sc("cj_new_url", "cj_new.html", "https://example.com/ping を10分ごとに呼ぶジョブを作りたい", ["#cj-title", "#cj-url"]),
+    sc("cj_new_advanced", "cj_new.html", "POST で呼びたいので、リクエストメソッドを変えたい", ["#cj-advanced"],
+       setup=[{"fill": "#cj-title", "value": "ping"}, {"fill": "#cj-url", "value": "https://example.com/ping"}]),
+    sc("cj_header_secret", "cj_advanced.html", "Authorization ヘッダーにトークンを入れたい", ["#cj-hval", "#cj-hname"], caution=True),
+    sc("cj_apikey", "cj_settings.html", "REST API キーを作りたい", ["#cj-apikey"], caution=True),
+    sc("cj_delete_account", "cj_settings.html", "アカウントを削除したい", ["#cj-delacct"], caution=True),
 ]
 
 if __name__ == "__main__":
